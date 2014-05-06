@@ -1,4 +1,4 @@
-package org.springframework.roo.addon.json;
+package org.springframwork.roo.addon.json;
 
 import org.springframework.roo.classpath.PhysicalTypeMetadata;
 import org.springframework.roo.classpath.details.annotations.populator.AbstractAnnotationValues;

@@ -70,5 +70,12 @@
             <!-- Optional because we don't want to make it transitive -->
             <optional>true</optional>
         </dependency>
+        <dependency>
+        	<groupId>org.springframework.roo</groupId>
+        	<artifactId>
+        		org.springframework.roo.addon.plural
+        	</artifactId>
+        	<type>bundle</type>
+        </dependency>
     </dependencies>
 </project>

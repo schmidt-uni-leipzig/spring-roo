@@ -1,4 +1,4 @@
-package org.springframework.roo.addon.json;
+package org.springframwork.roo.addon.json;
 
 import org.springframework.roo.model.CustomData;
 
@@ -9,5 +9,8 @@ import org.springframework.roo.model.CustomData;
  * @since 1.1.3
  */
 public enum CustomDataJsonTags {
-    FROM_JSON_ARRAY_METHOD, FROM_JSON_METHOD, TO_JSON_ARRAY_METHOD, TO_JSON_METHOD;
+    FROM_JSON_ARRAY_METHOD, 
+    FROM_JSON_METHOD, 
+    TO_JSON_ARRAY_METHOD, 
+    TO_JSON_METHOD;
 }

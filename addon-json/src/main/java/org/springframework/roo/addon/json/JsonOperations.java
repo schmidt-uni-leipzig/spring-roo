@@ -1,4 +1,4 @@
-package org.springframework.roo.addon.json;
+package org.springframwork.roo.addon.json;
 
 import org.springframework.roo.model.JavaType;
 
@@ -80,6 +80,18 @@ public interface JsonOperations {
     void annotateType(JavaType type, String rootName, boolean deepSerialize,
             boolean iso8601Dates);
 
+    /**
+     * Annotates the given Fields of the last added {@link JavaType} for null-serialization (or no serialization)
+     * 
+     * @param javaType
+     * 			the owning type
+     * @param propertyName
+     * 			name of the Field not to be serialized
+     * @param nullSerialization
+     * 			null-serialization option
+     */
+    void annotateFields(final JavaType javaType, final String[] fieldNames, final NullSerialization nullSerialization) throws Exception;
+    
     /**
      * Indicates whether this commands for this add-on should be available.
      * 

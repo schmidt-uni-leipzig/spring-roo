@@ -10,5 +10,5 @@ for %%a in ("%ROO_HOME%\bin\*.jar") do set ROO_CP=!ROO_CP!%%a;
 rem Hop, hop, hop...
 java -Dflash.message.disabled=false -Djline.nobell=true %ROO_OPTS% -Droo.args="%*" -DdevelopmentMode=false -Dorg.osgi.framework.storage="%ROO_HOME%\cache" -Dfelix.auto.deploy.dir="%ROO_HOME%\bundle" -Dfelix.config.properties="file:%ROO_HOME%\conf\config.properties" -Droo.console.ansi=true -cp "%ROO_CP%" org.springframework.roo.bootstrap.Main
 rem echo Roo exited with code %errorlevel%
-
+PAUSE
 :end

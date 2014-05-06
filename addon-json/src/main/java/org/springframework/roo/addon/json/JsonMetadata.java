@@ -1,5 +1,4 @@
-package org.springframework.roo.addon.json;
-
+package org.springframwork.roo.addon.json;
 import static org.springframework.roo.model.JavaType.STRING;
 import static org.springframework.roo.model.JdkJavaType.ARRAY_LIST;
 import static org.springframework.roo.model.JdkJavaType.COLLECTION;

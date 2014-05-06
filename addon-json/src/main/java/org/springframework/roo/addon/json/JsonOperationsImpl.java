@@ -1,4 +1,4 @@
-package org.springframework.roo.addon.json;
+package org.springframwork.roo.addon.json;
 
 import static org.springframework.roo.model.RooJavaType.ROO_JAVA_BEAN;
 
@@ -10,8 +10,12 @@ import org.springframework.roo.classpath.TypeLocationService;
 import org.springframework.roo.classpath.TypeManagementService;
 import org.springframework.roo.classpath.details.ClassOrInterfaceTypeDetails;
 import org.springframework.roo.classpath.details.ClassOrInterfaceTypeDetailsBuilder;
+import org.springframework.roo.classpath.details.FieldMetadata;
+import org.springframework.roo.classpath.details.FieldMetadataBuilder;
 import org.springframework.roo.classpath.details.MemberFindingUtils;
+import org.springframework.roo.classpath.details.annotations.AnnotationMetadata;
 import org.springframework.roo.classpath.details.annotations.AnnotationMetadataBuilder;
+import org.springframework.roo.model.JavaSymbolName;
 import org.springframework.roo.model.JavaType;
 import org.springframework.roo.model.RooJavaType;
 import org.springframework.roo.project.ProjectOperations;
@@ -55,8 +59,7 @@ public class JsonOperationsImpl implements JsonOperations {
         annotateType(javaType, rootName, false, false);
     }
 
-    public void annotateType(final JavaType javaType, final String rootName,
-            final boolean deepSerialize, final boolean iso8601Dates) {
+    public void annotateType(final JavaType javaType, final String rootName, final boolean deepSerialize, final boolean iso8601Dates) {
         Validate.notNull(javaType, "Java type required");
 
         final ClassOrInterfaceTypeDetails cid = typeLocationService
@@ -84,6 +87,38 @@ public class JsonOperationsImpl implements JsonOperations {
             cidBuilder.addAnnotation(annotationBuilder);
             typeManagementService.createOrUpdateTypeOnDisk(cidBuilder.build());
         }
+    }
+    
+    public void annotateFields(final JavaType javaType, final String[] fieldNames, final NullSerialization nullSerialization) throws Exception
+    {
+        final ClassOrInterfaceTypeDetails cid = typeLocationService.getTypeDetails(javaType);
+        if (cid == null) 
+            throw new IllegalArgumentException("Cannot locate source for '"+ javaType.getFullyQualifiedTypeName() + "'");
+        
+    	if(MemberFindingUtils.getAnnotationOfType(cid.getAnnotations(), RooJavaType.ROO_JSON) == null)
+    		throw new IllegalArgumentException("Type not annotated: '"+ javaType.getFullyQualifiedTypeName() + "'\n annotate type with '@RooJson' first");
+    	
+    	JavaType jsonType = new JavaType("flexjson.JSON");
+        AnnotationMetadataBuilder annoBuilder = new AnnotationMetadataBuilder();
+        annoBuilder.setAnnotationType(jsonType);
+        annoBuilder.addClassAttribute("transformer", new JavaType("org.springframework.roo.addon.json.NoSerializationTransformer"));
+        
+        final ClassOrInterfaceTypeDetailsBuilder cidBuilder = new ClassOrInterfaceTypeDetailsBuilder(cid);
+        
+        
+        for(int i =0;i<fieldNames.length;i++)
+        {
+	    	JavaSymbolName name = new JavaSymbolName(fieldNames[i]);
+	        FieldMetadata field = typeLocationService.getTypeDetails(javaType).getDeclaredField(name);
+	        Validate.notNull(field, "Field not found: " + fieldNames[i]);
+	        if(field.getAnnotation(jsonType) != null && field.getAnnotation(jsonType).getAttribute(new JavaSymbolName("transformer")) != null)
+	        	throw new Exception("conflicting json transformer detected for field: " + fieldNames[i]);
+	        FieldMetadataBuilder fieldBuilder = new FieldMetadataBuilder(field);
+	        fieldBuilder.addAnnotation(annoBuilder);
+	        cidBuilder.getDeclaredFields().remove(field);
+	        cidBuilder.addField(fieldBuilder);
+        }
+        typeManagementService.createOrUpdateTypeOnDisk(cidBuilder.build());
     }
 
     public boolean isJsonInstallationPossible() {

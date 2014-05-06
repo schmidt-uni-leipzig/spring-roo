@@ -1,4 +1,4 @@
-package org.springframework.roo.addon.json;
+package org.springframwork.roo.addon.json;
 
 import static org.springframework.roo.model.RooJavaType.ROO_IDENTIFIER;
 import static org.springframework.roo.model.RooJavaType.ROO_JSON;
