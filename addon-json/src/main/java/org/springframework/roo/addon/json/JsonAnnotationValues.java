@@ -1,4 +1,4 @@
-package org.springframwork.roo.addon.json;
+package org.springframework.roo.addon.json;
 
 import org.springframework.roo.classpath.PhysicalTypeMetadata;
 import org.springframework.roo.classpath.details.annotations.populator.AbstractAnnotationValues;
@@ -12,6 +12,7 @@ import org.springframework.roo.model.RooJavaType;
  * @author Stefan Schmidt
  * @since 1.1
  */
+
 public class JsonAnnotationValues extends AbstractAnnotationValues {
 
     @AutoPopulate boolean deepSerialize;
@@ -27,8 +28,7 @@ public class JsonAnnotationValues extends AbstractAnnotationValues {
      * 
      * @param governorPhysicalTypeMetadata
      */
-    public JsonAnnotationValues(
-            final PhysicalTypeMetadata governorPhysicalTypeMetadata) {
+    public JsonAnnotationValues(final PhysicalTypeMetadata governorPhysicalTypeMetadata) {
         super(governorPhysicalTypeMetadata, RooJavaType.ROO_JSON);
         AutoPopulationUtils.populate(this, annotationMetadata);
     }

@@ -1,4 +1,4 @@
-package org.springframwork.roo.addon.json;
+package org.springframework.roo.addon.json;
 
 import static org.springframework.roo.shell.OptionContexts.UPDATE_PROJECT;
 

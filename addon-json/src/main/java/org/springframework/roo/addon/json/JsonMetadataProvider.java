@@ -1,4 +1,4 @@
-package org.springframwork.roo.addon.json;
+package org.springframework.roo.addon.json;
 
 import static org.springframework.roo.model.RooJavaType.ROO_IDENTIFIER;
 import static org.springframework.roo.model.RooJavaType.ROO_JSON;
@@ -20,6 +20,7 @@ import org.springframework.roo.project.LogicalPath;
  * @author Stefan Schmidt
  * @since 1.1
  */
+
 @Component(immediate = true)
 @Service
 public class JsonMetadataProvider extends AbstractItdMetadataProvider {

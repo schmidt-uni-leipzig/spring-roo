@@ -1,4 +1,4 @@
-package org.springframwork.roo.addon.json;
+package org.springframework.roo.addon.json;
 
 import org.springframework.roo.model.CustomData;
 

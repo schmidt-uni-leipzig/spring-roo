@@ -1,4 +1,4 @@
-package org.springframwork.roo.addon.json;
+package org.springframework.roo.addon.json;
 
 public enum NullSerialization 
 {

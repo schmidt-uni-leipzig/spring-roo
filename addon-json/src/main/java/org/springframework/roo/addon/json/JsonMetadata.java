@@ -1,4 +1,4 @@
-package org.springframwork.roo.addon.json;
+package org.springframework.roo.addon.json;
 import static org.springframework.roo.model.JavaType.STRING;
 import static org.springframework.roo.model.JdkJavaType.ARRAY_LIST;
 import static org.springframework.roo.model.JdkJavaType.COLLECTION;
@@ -31,6 +31,7 @@ import org.springframework.roo.project.LogicalPath;
  * @author Stefan Schmidt
  * @since 1.1
  */
+
 public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
 
     private static final JavaType JSON_DESERIALIZER = new JavaType(

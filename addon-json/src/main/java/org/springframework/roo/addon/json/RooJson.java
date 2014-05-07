@@ -1,4 +1,4 @@
-package org.springframwork.roo.addon.json;
+package org.springframework.roo.addon.json;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
