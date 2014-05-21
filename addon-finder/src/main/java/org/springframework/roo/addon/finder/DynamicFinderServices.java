@@ -39,7 +39,10 @@ public interface DynamicFinderServices {
      */
     List<JavaSymbolName> getFinders(MemberDetails memberDetails, String plural,
             int depth, Set<JavaSymbolName> exclusions);
-
+    
+    List<JavaSymbolName> getReferenceFinders(MemberDetails memberDetails, String plural,
+            JavaSymbolName reference, int depth, Set<JavaSymbolName> exclusions);
+    
     /**
      * This method generates a {@link QueryHolder} object that consists of the:
      * <ul>

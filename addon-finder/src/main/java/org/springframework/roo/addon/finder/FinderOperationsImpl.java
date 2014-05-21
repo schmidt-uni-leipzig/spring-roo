@@ -281,4 +281,170 @@ public class FinderOperationsImpl implements FinderOperations {
         }
         return result;
     }
+    
+    // Return only filter for reference filtering
+    public SortedSet<String> listReferenceFindersFor(final JavaType typeName,
+            final Integer depth) {
+        Validate.notNull(typeName, "Java type required");
+
+        final String id = typeLocationService
+                .getPhysicalTypeIdentifier(typeName);
+        if (id == null) {
+            throw new IllegalArgumentException("Cannot locate source for '"
+                    + typeName.getFullyQualifiedTypeName() + "'");
+        }
+
+        // Go and get the entity metadata, as any type with finders has to be an
+        // entity
+        final JavaType javaType = PhysicalTypeIdentifier.getJavaType(id);
+        final LogicalPath path = PhysicalTypeIdentifier.getPath(id);
+        final String entityMid = JpaActiveRecordMetadata.createIdentifier(
+                javaType, path);
+
+        // Get the entity metadata
+        final JpaActiveRecordMetadata jpaActiveRecordMetadata = (JpaActiveRecordMetadata) metadataService
+                .get(entityMid);
+        if (jpaActiveRecordMetadata == null) {
+            throw new IllegalArgumentException(
+                    "Cannot provide finders because '"
+                            + typeName.getFullyQualifiedTypeName()
+                            + "' is not an 'active record' entity");
+        }
+
+        // Get the member details
+        final PhysicalTypeMetadata physicalTypeMetadata = (PhysicalTypeMetadata) metadataService
+                .get(PhysicalTypeIdentifier.createIdentifier(javaType, path));
+        if (physicalTypeMetadata == null) {
+            throw new IllegalStateException(
+                    "Could not determine physical type metadata for type "
+                            + javaType);
+        }
+        final ClassOrInterfaceTypeDetails cid = physicalTypeMetadata
+                .getMemberHoldingTypeDetails();
+        if (cid == null) {
+            throw new IllegalStateException(
+                    "Could not determine class or interface type details for type "
+                            + javaType);
+        }
+        final MemberDetails memberDetails = memberDetailsScanner
+                .getMemberDetails(getClass().getName(), cid);
+        final List<FieldMetadata> idFields = persistenceMemberLocator
+                .getIdentifierFields(javaType);
+        final FieldMetadata versionField = persistenceMemberLocator
+                .getVersionField(javaType);
+
+        // Compute the finders (excluding the ID, version, and EM fields)
+        final Set<JavaSymbolName> exclusions = new HashSet<JavaSymbolName>();
+        exclusions.add(jpaActiveRecordMetadata.getEntityManagerField()
+                .getFieldName());
+        for (final FieldMetadata idField : idFields) {
+            exclusions.add(idField.getFieldName());
+        }
+
+        if (versionField != null) {
+            exclusions.add(versionField.getFieldName());
+        }
+
+        final SortedSet<String> result = new TreeSet<String>();
+        
+        ////////////////////////////////
+        for (final FieldMetadata field : memberDetails.getFields()) {
+        	SortedSet<String> sortedFieldFinders;
+        	try {
+        		sortedFieldFinders = listFindersFor(field.getFieldType(), 1);
+
+        	} catch (Exception e) {
+        		continue;
+        	}   
+        	if (sortedFieldFinders.size() <= 0) continue;
+        	
+        	final List<JavaSymbolName> fieldFinders = dynamicFinderServices.getReferenceFinders(
+                    memberDetails, jpaActiveRecordMetadata.getPlural(), field.getFieldName(), depth,
+                    exclusions);
+        	
+        	for (final JavaSymbolName finder : fieldFinders) {
+                // Avoid displaying problematic finders
+                try {
+                    final QueryHolder queryHolder = dynamicFinderServices
+                            .getQueryHolder(memberDetails, finder,
+                                    jpaActiveRecordMetadata.getPlural(),
+                                    jpaActiveRecordMetadata.getEntityName());
+                    final List<JavaSymbolName> parameterNames = queryHolder
+                            .getParameterNames();
+                    final List<JavaType> parameterTypes = queryHolder
+                            .getParameterTypes();
+                    final StringBuilder signature = new StringBuilder();
+                    int x = -1;
+                    for (final JavaType param : parameterTypes) {
+                        x++;
+                        if (x > 0) {
+                            signature.append(", ");
+                        }
+                        signature.append(param.getSimpleTypeName()).append(" ")
+                                .append(parameterNames.get(x).getSymbolName());
+                    }
+                    result.add(finder.getSymbolName() + "(" + signature + ")" /*
+                                                                               * query:
+                                                                               * '"
+                                                                               * +
+                                                                               * query
+                                                                               * +
+                                                                               * "'"
+                                                                               */);
+                }
+                catch (final RuntimeException e) {
+                    result.add(finder.getSymbolName() + " - failure");
+                }
+            }
+        	
+        	//for (final String finder : fieldFinders) {
+        	//}
+        	
+        	//result.add(i + ".0: "); 
+        	//result.add(i + ".1: ============================================================"); 
+        	//result.add(i + ".2: " + field.getFieldName() + ": " + field.getFieldType().toString()); 
+        	
+        }
+        return result;
+        
+        
+        /*final List<JavaSymbolName> finders = dynamicFinderServices.getReferenceFinders(
+                memberDetails, jpaActiveRecordMetadata.getPlural(), depth,
+                exclusions);
+        for (final JavaSymbolName finder : finders) {
+            // Avoid displaying problematic finders
+            try {
+                final QueryHolder queryHolder = dynamicFinderServices
+                        .getQueryHolder(memberDetails, finder,
+                                jpaActiveRecordMetadata.getPlural(),
+                                jpaActiveRecordMetadata.getEntityName());
+                final List<JavaSymbolName> parameterNames = queryHolder
+                        .getParameterNames();
+                final List<JavaType> parameterTypes = queryHolder
+                        .getParameterTypes();
+                final StringBuilder signature = new StringBuilder();
+                int x = -1;
+                for (final JavaType param : parameterTypes) {
+                    x++;
+                    if (x > 0) {
+                        signature.append(", ");
+                    }
+                    signature.append(param.getSimpleTypeName()).append(" ")
+                            .append(parameterNames.get(x).getSymbolName());
+                }
+                result.add(finder.getSymbolName() + "(" + signature + ")" /*
+                                                                           * query:
+                                                                           * '"
+                                                                           * +
+                                                                           * query
+                                                                           * +
+                                                                           * "'"
+                                                                           *//*);
+            }
+            catch (final RuntimeException e) {
+                result.add(finder.getSymbolName() + " - failure");
+            }
+        }
+        return result;*/
+    }
 }

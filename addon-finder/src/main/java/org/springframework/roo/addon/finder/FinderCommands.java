@@ -40,7 +40,7 @@ public class FinderCommands implements CommandMarker {
         finderOperations.installFinder(typeName, finderName);
     }
 
-    @CliAvailabilityIndicator({ "finder list", "finder add" })
+    @CliAvailabilityIndicator({ "finder list", "finder add", "finder ref_list" })
     public boolean isFinderCommandAvailable() {
         return finderOperations.isFinderInstallationPossible();
     }
@@ -55,6 +55,43 @@ public class FinderCommands implements CommandMarker {
         Validate.isTrue(depth <= 3, "Depth must not be greater than 3");
 
         final SortedSet<String> finders = finderOperations.listFindersFor(
+                typeName, depth);
+        if (StringUtils.isBlank(filter)) {
+            return finders;
+        }
+
+        final Set<String> requiredEntries = new HashSet<String>();
+        final String[] filterTokens = new StrTokenizer(filter, ",")
+                .getTokenArray();
+        for (final String requiredString : filterTokens) {
+            requiredEntries.add(requiredString.toLowerCase());
+        }
+        if (requiredEntries.isEmpty()) {
+            return finders;
+        }
+
+        final SortedSet<String> result = new TreeSet<String>();
+        for (final String finder : finders) {
+            required: for (final String requiredEntry : requiredEntries) {
+                if (finder.toLowerCase().contains(requiredEntry)) {
+                    result.add(finder);
+                    break required;
+                }
+            }
+        }
+        return result;
+    }
+    
+    @CliCommand(value = "finder ref_list", help = "List all finders for a given target (must be an entity)")
+    public SortedSet<String> listReferenceFinders(
+            @CliOption(key = "class", mandatory = false, unspecifiedDefaultValue = "*", optionContext = UPDATE_PROJECT, help = "The controller or entity for which the finders are generated") final JavaType typeName,
+            @CliOption(key = { "", "depth" }, mandatory = false, unspecifiedDefaultValue = "1", specifiedDefaultValue = "1", help = "The depth of attribute combinations to be generated for the finders") final Integer depth,
+            @CliOption(key = "filter", mandatory = false, help = "A comma separated list of strings that must be present in a filter to be included") final String filter) {
+
+        Validate.isTrue(depth >= 1, "Depth must be at least 1");
+        Validate.isTrue(depth <= 3, "Depth must not be greater than 3");
+
+        final SortedSet<String> finders = finderOperations.listReferenceFindersFor(
                 typeName, depth);
         if (StringUtils.isBlank(filter)) {
             return finders;

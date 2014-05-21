@@ -18,4 +18,7 @@ public interface FinderOperations {
     boolean isFinderInstallationPossible();
 
     SortedSet<String> listFindersFor(JavaType typeName, Integer depth);
+    
+    SortedSet<String> listReferenceFindersFor(JavaType typeName, Integer depth);
+    
 }

@@ -69,6 +69,16 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
 
         return tempFinders;
     }
+    
+    private Set<JavaSymbolName> createReferenceFinders(final FieldMetadata field,
+            final Set<JavaSymbolName> finders, final String prepend,
+            final boolean isFirst) {
+        final Set<JavaSymbolName> tempFinders = new HashSet<JavaSymbolName>();
+        
+	    tempFinders.addAll(populateReferenceFinders(field, prepend));
+
+        return tempFinders;
+    }
 
     /**
      * Returns the {@link JavaType} from the specified {@link MemberDetails}
@@ -125,6 +135,57 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
                     tempFinders.addAll(createFinders(field, finders, "Or",
                             false));
                 }
+            }
+            finders.addAll(tempFinders);
+        }
+
+        return Collections.unmodifiableList(new ArrayList<JavaSymbolName>(
+                finders));
+    }
+    
+    // Only return finders for references
+    public List<JavaSymbolName> getReferenceFinders(final MemberDetails memberDetails,
+            final String plural, 
+            JavaSymbolName reference, 
+            final int depth,
+            final Set<JavaSymbolName> exclusions) {
+        Validate.notNull(memberDetails, "Member details required");
+        Validate.notBlank(plural, "Plural required");
+        Validate.notNull(depth,
+                "The depth of combinations used for finder signatures combinations required");
+        Validate.notNull(exclusions, "Exclusions required");
+
+        final SortedSet<JavaSymbolName> finders = new TreeSet<JavaSymbolName>();
+
+        final List<FieldMetadata> fields = memberDetails.getFields();
+        for (int i = 0; i < depth; i++) {
+            final SortedSet<JavaSymbolName> tempFinders = new TreeSet<JavaSymbolName>();
+            for (final FieldMetadata field : fields) {
+                
+            	//String name = field.getFieldType().toString();
+            	if (reference.equals(field.getFieldName())) {
+            		//tempFinders.addAll(createReferenceFinders(field, finders, "find" + plural + "By", true));
+            		tempFinders.addAll(createReferenceFinders(field, finders, "find" + plural + "By", true));
+            	}
+            	
+            	/*
+            	// Ignoring java.util.Map field types (see ROO-194)
+                if (field == null || field.getFieldType().equals(MAP)) {
+                    continue;
+                }
+                if (exclusions.contains(field.getFieldName())) {
+                    continue;
+                }
+                if (i == 0) {
+                    tempFinders.addAll(createFinders(field, finders, "find"
+                            + plural + "By", true));
+                }
+                else {
+                    tempFinders.addAll(createFinders(field, finders, "And",
+                            false));
+                    tempFinders.addAll(createFinders(field, finders, "Or",
+                            false));
+                }*/
             }
             finders.addAll(tempFinders);
         }
@@ -502,6 +563,25 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
                             + keyWord));
                 }
             }
+        }
+
+        return tempFinders;
+    }
+    
+    private Set<JavaSymbolName> populateReferenceFinders(
+            final FieldMetadata field,
+            final String prepend) {
+        final Set<JavaSymbolName> tempFinders = new HashSet<JavaSymbolName>();
+
+        if (isTransient(field)) {
+            // No need to add transient fields
+        }
+        else {
+            final String finderName = prepend
+                    + field.getFieldName()
+                           .getSymbolNameCapitalisedFirstLetter()
+                    + "Where";
+            tempFinders.add(new JavaSymbolName(finderName));
         }
 
         return tempFinders;

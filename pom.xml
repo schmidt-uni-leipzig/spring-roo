@@ -841,7 +841,8 @@
             </extension>
         </extensions>
         <plugins>
-            <plugin>
+            <!-- comment out this block temporarily
+			<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.3</version>
@@ -858,6 +859,7 @@
                     </execution>
                 </executions>
             </plugin>
+			-->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
