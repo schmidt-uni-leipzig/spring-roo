@@ -3,8 +3,10 @@ package org.springframework.roo.addon.finder;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.roo.classpath.details.FieldMetadata;
 import org.springframework.roo.classpath.scanner.MemberDetails;
 import org.springframework.roo.model.JavaSymbolName;
+import org.springframework.roo.model.JavaType;
 
 /**
  * The {@link DynamicFinderServices} is used for the generation of dynamic
@@ -40,8 +42,12 @@ public interface DynamicFinderServices {
     List<JavaSymbolName> getFinders(MemberDetails memberDetails, String plural,
             int depth, Set<JavaSymbolName> exclusions);
     
-    List<JavaSymbolName> getReferenceFinders(MemberDetails memberDetails, String plural,
-            JavaSymbolName reference, int depth, Set<JavaSymbolName> exclusions);
+    List<JavaSymbolName> getReferenceFinders(MemberDetails memberDetails, 
+    	    String plural,
+    		FieldMetadata reference, 
+    		List<FieldMetadata> referenceFields, 
+    		int depth, 
+    		Set<JavaSymbolName> exclusions);
     
     /**
      * This method generates a {@link QueryHolder} object that consists of the:
@@ -63,6 +69,9 @@ public interface DynamicFinderServices {
      *         built at this time)
      */
     QueryHolder getQueryHolder(MemberDetails memberDetails,
+            JavaSymbolName finderName, String plural, String entityName);
+    
+    QueryHolder getReferenceQueryHolder(MemberDetails memberDetails,
             JavaSymbolName finderName, String plural, String entityName);
     
     QueryHolder getCountQueryHolder(MemberDetails memberDetails,

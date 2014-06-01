@@ -282,11 +282,27 @@ public class FinderOperationsImpl implements FinderOperations {
         return result;
     }
     
+    /*private List<FieldMetadata> getFieldForField(final FieldMetadata referenceField) {
+    	final String id = typeLocationService.getPhysicalTypeIdentifier(referenceField.getFieldType());
+    	final ClassOrInterfaceTypeDetails cid = typeLocationService.getTypeDetails(id);
+    	final MemberDetails memberDetails = memberDetailsScanner.getMemberDetails(referenceField.getFieldType().getClass().getName(), cid);
+    	
+    	return memberDetails.getFields();
+    }*/
+    
+    private List<FieldMetadata> getFinderFieldsForField(final JavaType field) {
+    	final String id = typeLocationService.getPhysicalTypeIdentifier(field);
+    	final ClassOrInterfaceTypeDetails cid = typeLocationService.getTypeDetails(id);
+    	final MemberDetails memberDetails = memberDetailsScanner.getMemberDetails(field.getClass().getName(), cid);
+    	
+    	return memberDetails.getFields();
+    }
+    
     // Return only filter for reference filtering
     public SortedSet<String> listReferenceFindersFor(final JavaType typeName,
             final Integer depth) {
         Validate.notNull(typeName, "Java type required");
-
+        
         final String id = typeLocationService
                 .getPhysicalTypeIdentifier(typeName);
         if (id == null) {
@@ -352,21 +368,24 @@ public class FinderOperationsImpl implements FinderOperations {
         	SortedSet<String> sortedFieldFinders;
         	try {
         		sortedFieldFinders = listFindersFor(field.getFieldType(), 1);
-
         	} catch (Exception e) {
         		continue;
         	}   
         	if (sortedFieldFinders.size() <= 0) continue;
         	
         	final List<JavaSymbolName> fieldFinders = dynamicFinderServices.getReferenceFinders(
-                    memberDetails, jpaActiveRecordMetadata.getPlural(), field.getFieldName(), depth,
+        			memberDetails, 
+        			jpaActiveRecordMetadata.getPlural(), 
+                    field, 
+                    getFinderFieldsForField(field.getFieldType()), 
+                    depth, 
                     exclusions);
         	
         	for (final JavaSymbolName finder : fieldFinders) {
                 // Avoid displaying problematic finders
                 try {
                     final QueryHolder queryHolder = dynamicFinderServices
-                            .getQueryHolder(memberDetails, finder,
+                    		.getReferenceQueryHolder(memberDetails, finder,
                                     jpaActiveRecordMetadata.getPlural(),
                                     jpaActiveRecordMetadata.getEntityName());
                     final List<JavaSymbolName> parameterNames = queryHolder
@@ -383,17 +402,10 @@ public class FinderOperationsImpl implements FinderOperations {
                         signature.append(param.getSimpleTypeName()).append(" ")
                                 .append(parameterNames.get(x).getSymbolName());
                     }
-                    result.add(finder.getSymbolName() + "(" + signature + ")" /*
-                                                                               * query:
-                                                                               * '"
-                                                                               * +
-                                                                               * query
-                                                                               * +
-                                                                               * "'"
-                                                                               */);
+                    result.add(finder.getSymbolName() + "(" + signature + ")");
                 }
                 catch (final RuntimeException e) {
-                    result.add(finder.getSymbolName() + " - failure");
+                    result.add(finder.getSymbolName() + " - failure: ");
                 }
             }
         	

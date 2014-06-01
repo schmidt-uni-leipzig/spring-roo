@@ -21,6 +21,11 @@ move "%ROO_HOME%\bootstrap\target\osgi\bundle\org.apache.felix.framework-*.jar" 
 rem Build a classpath containing our two magical startup JARs
 for %%a in ("%ROO_HOME%\bootstrap\target\osgi\bin\*.jar") do set ROO_CP=!ROO_CP!%%a;
 
+
+set REMOTE_DEBUG=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,address=12345,suspend=n
+
+
 rem Hop, hop, hop...
-java -Djline.nobell=true %ROO_OPTS% -Droo.args="%*" -DdevelopmentMode=true -Dorg.osgi.framework.storage="%ROO_HOME%\bootstrap\target\osgi\cache" -Dfelix.auto.deploy.dir="%ROO_HOME%\bootstrap\target\osgi\bundle" -Dfelix.config.properties="file:%ROO_HOME%\bootstrap\target\osgi\conf\config.properties" -Droo.console.ansi=true -cp "%ROO_CP%" org.springframework.roo.bootstrap.Main
+java -Djline.nobell=true %ROO_OPTS% -Droo.args="%*" -DdevelopmentMode=true -Dorg.osgi.framework.storage="%ROO_HOME%\bootstrap\target\osgi\cache" -Dfelix.auto.deploy.dir="%ROO_HOME%\bootstrap\target\osgi\bundle" -Dfelix.config.properties="file:%ROO_HOME%\bootstrap\target\osgi\conf\config.properties" %REMOTE_DEBUG% -Droo.console.ansi=true -cp "%ROO_CP%" org.springframework.roo.bootstrap.Main
 echo Roo exited with code %errorlevel%
+
