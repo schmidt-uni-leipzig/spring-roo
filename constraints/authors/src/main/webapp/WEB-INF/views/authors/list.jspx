@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_de_unileipzig_authors_model_Author" items="${authors}" z="UJh2re//vqsT/o+iQmTAaU3dbTI=">
+        <table:table data="${authors}" id="l_de_unileipzig_authors_model_Author" path="/authors" z="LslNPwVsf9KHklWYTHVBrobZjxw=">
+            <table:column id="c_de_unileipzig_authors_model_Author_name" property="name" z="I69Ru0GeBaJmEsGrgdAE0s3rkzg="/>
+            <table:column id="c_de_unileipzig_authors_model_Author_surname" property="surname" z="JxGEP2jSIWilkXogS3JXK49jAj0="/>
+            <table:column id="c_de_unileipzig_authors_model_Author_password" property="password" z="60XAi6dPQhKDr73UbhgUQ8CXTGY="/>
+        </table:table>
+    </page:list>
+</div>
