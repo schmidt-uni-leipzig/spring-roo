@@ -75,13 +75,13 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 			existing != null 
 			&& MemberFindingUtils.getAnnotationOfType(
 					existing.getAnnotations(), 
-					new JavaType(SpELAssertList.class.getName())//RooConstraints.class.getName())
+					new JavaType(SpELAssert.List.class.getName())//RooConstraints.class.getName())
 				) == null
 			){
 			ClassOrInterfaceTypeDetailsBuilder classOrInterfaceTypeDetailsBuilder = new ClassOrInterfaceTypeDetailsBuilder(existing);
 			
 			// Create JavaType instance for the add-ons trigger annotation
-			JavaType rooSpELAssertList = new JavaType(SpELAssertList.class.getName());//"cz.jirutka.validator.spring.SpELAssert");//RooConstraints.class.getName());
+			JavaType rooSpELAssertList = new JavaType(SpELAssert.List.class.getName());//"cz.jirutka.validator.spring.SpELAssert");//RooConstraints.class.getName());
 
 			
 //			// Create JavaType instance for the add-ons trigger annotation
