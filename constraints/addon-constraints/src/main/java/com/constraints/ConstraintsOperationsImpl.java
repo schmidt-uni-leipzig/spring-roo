@@ -15,6 +15,8 @@ import org.springframework.roo.classpath.details.ClassOrInterfaceTypeDetailsBuil
 import org.springframework.roo.classpath.details.annotations.AnnotationAttributeValue;
 import org.springframework.roo.classpath.details.annotations.AnnotationMetadataBuilder;
 import org.springframework.roo.classpath.details.annotations.StringAttributeValue;
+import org.springframework.roo.classpath.details.annotations.ArrayAttributeValue;
+import org.springframework.roo.classpath.details.annotations.NestedAnnotationAttributeValue;
 import org.springframework.roo.model.JavaSymbolName;
 import org.springframework.roo.model.JavaType;
 import org.springframework.roo.project.ProjectOperations;
@@ -24,7 +26,9 @@ import org.springframework.roo.project.DependencyType;
 import org.springframework.roo.project.Repository;
 import org.springframework.roo.support.util.XmlUtils;
 import org.w3c.dom.Element;
+
 //import cz.jirutka.validator.spring.SpELAssert;
+//import cz.jirutka.validator.spring.SpELAssertList;
 
 /**
  * Implementation of operations this add-on offers.
@@ -75,17 +79,22 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 			existing != null 
 			&& MemberFindingUtils.getAnnotationOfType(
 					existing.getAnnotations(), 
-					new JavaType(SpELAssert.List.class.getName())//RooConstraints.class.getName())
+					new JavaType("cz.jirutka.validator.spring.SpELAssertList")
 				) == null
 			){
 			ClassOrInterfaceTypeDetailsBuilder classOrInterfaceTypeDetailsBuilder = new ClassOrInterfaceTypeDetailsBuilder(existing);
 			
 			// Create JavaType instance for the add-ons trigger annotation
-			JavaType rooSpELAssertList = new JavaType(SpELAssert.List.class.getName());//"cz.jirutka.validator.spring.SpELAssert");//RooConstraints.class.getName());
+			JavaType rooSpELAssertList = new JavaType("cz.jirutka.validator.spring.SpELAssertList");//"cz.jirutka.validator.spring.SpELAssert");
 
+			// List of Annotations
+			List<NestedAnnotationAttributeValue> annotationList = new ArrayList<NestedAnnotationAttributeValue>(1);
 			
-//			// Create JavaType instance for the add-ons trigger annotation
-//			JavaType rooSpELAssert = new JavaType(SpELAssert.class.getName());
+			
+			
+			
+			// Create JavaType instance for the add-ons trigger annotation
+			JavaType rooSpELAssert = new JavaType("cz.jirutka.validator.spring.SpELAssert");
 			
 			// Add parameters to the annotation
 			final List<AnnotationAttributeValue<?>> rooConstraintsAttributes = new ArrayList<AnnotationAttributeValue<?>>();
@@ -94,17 +103,18 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 			if (applyIf != null){
 				rooConstraintsAttributes.add(new StringAttributeValue(new JavaSymbolName("applyIf"), applyIf));
 			}
+
+			// Create inner annotation metadata
+			AnnotationMetadataBuilder innerAnnotationBuilder = new AnnotationMetadataBuilder(rooSpELAssert, rooConstraintsAttributes);
 			
-//			// Add parameters to the annotation
-//			final List<AnnotationAttributeValue<?>> rooConstraintsListAttributes = new ArrayList<AnnotationAttributeValue<?>>();
-//			rooConstraintsListAttributes.add(new StringAttributeValue(new JavaSymbolName("value"), rooSpELAssert));
 			
-//			JavaType test = JavaType.listOf(rooSpELAssert); // AnnotationMetadataBuilder nochmal checken
-			// sed 's/<a>/<b>/g' file
-			// stackoverflow fragen
 			
-			// Create Annotation metadata
-			AnnotationMetadataBuilder annotationBuilder = new AnnotationMetadataBuilder(rooSpELAssertList, rooConstraintsAttributes);
+			// List attribute with all inner annotations
+			annotationList.add(new NestedAnnotationAttributeValue(new JavaSymbolName("value"), innerAnnotationBuilder.build()));
+			
+			// Create Annotation metadata for the List
+			final AnnotationMetadataBuilder annotationBuilder = new AnnotationMetadataBuilder(rooSpELAssertList);
+			annotationBuilder.addAttribute(new ArrayAttributeValue<NestedAnnotationAttributeValue>(new JavaSymbolName("value"), annotationList));
 			
 			// Add annotation to target type
 			classOrInterfaceTypeDetailsBuilder.addAnnotation(annotationBuilder.build());
