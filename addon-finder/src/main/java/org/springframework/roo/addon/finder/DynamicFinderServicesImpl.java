@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -548,16 +550,22 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
         return new QueryHolder(jpaQuery, parameterTypes, parameterNames, tokens);
     }
     
-    public QueryHolder getReferenceQueryHolder(final MemberDetails memberDetails,
-            final JavaSymbolName finderName, final String plural,
-            final String entityName) {
-        Validate.notNull(memberDetails, "Member details required");
+    public QueryHolder getReferenceQueryHolder(
+    		final MemberDetails rootMemberDetails,
+    		final MemberDetails referenceMemberDetails,
+            final JavaSymbolName finderName, 
+            final String rootPlural,
+            final String rootEntityName) {
+    	
+        Validate.notNull(rootMemberDetails, "Root member details required");
+        Validate.notNull(referenceMemberDetails, "Reference member details required");
         Validate.notNull(finderName, "Finder name required");
-        Validate.notBlank(plural, "Plural required");
+        Validate.notBlank(rootPlural, "Root plural required");
 
         List<Token> tokens;
         //try {
-            tokens = tokenizeReference(memberDetails, finderName, plural);
+            tokens = tokenizeReference(referenceMemberDetails, finderName, rootPlural);
+            //tokens = tokenize(rootMemberDetails, finderName, rootPlural);
         /*}
         catch (final FinderFieldTokenMissingException e) {
             return null;
@@ -566,14 +574,14 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
             return null;
         }*/
 
-        final String simpleTypeName = getConcreteJavaType(memberDetails)
+        final String simpleTypeName = getConcreteJavaType(rootMemberDetails)
                 .getSimpleTypeName();
         final String jpaQuery = getJpaQuery(tokens, simpleTypeName, finderName,
-                plural, entityName);
+        		rootPlural, rootEntityName);
         final List<JavaType> parameterTypes = getParameterTypes(tokens,
-                finderName, plural);
+                finderName, rootPlural);
         final List<JavaSymbolName> parameterNames = getParameterNames(tokens,
-                finderName, plural);
+                finderName, rootPlural);
         return new QueryHolder(jpaQuery, parameterTypes, parameterNames, tokens);
     }
     
@@ -709,11 +717,15 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
         return tokens;
     }
     
-    private List<Token> tokenizeReference(final MemberDetails memberDetails,
-            final JavaSymbolName finderName, final String plural) {
-        final String simpleTypeName = getConcreteJavaType(memberDetails)
+    private List<Token> tokenizeReference(
+    		final MemberDetails memberDetails,
+            final JavaSymbolName finderName, 
+            final String plural) {
+        
+    	final String simpleTypeName = getConcreteJavaType(memberDetails)
                 .getSimpleTypeName();
-        String finder = finderName.getSymbolName();
+        
+    	String finder = finderName.getSymbolName();
 
         // Just in case it starts with findBy we can remove it here
         final String findBy = "find" + plural + "By";
@@ -728,6 +740,17 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
                     + finderName.getSymbolName() + "' in " + simpleTypeName
                     + ".java is invalid");
         }
+        
+        
+        final Pattern tokenPattern = Pattern.compile("^([A-Z][a-z]*)Where(.*)");
+    	final Matcher tokenMatcher = tokenPattern.matcher(finder);
+    	String referenceToken = "";
+    	while (tokenMatcher.find()) {
+    		referenceToken 	= tokenMatcher.group(1);
+    		finder 			= tokenMatcher.group(2);
+    	}
+        
+        String a = referenceToken;
 
         final SortedSet<FieldToken> fieldTokens = new TreeSet<FieldToken>();
         for (final MethodMetadata method : getLocatedMutators(memberDetails)) {

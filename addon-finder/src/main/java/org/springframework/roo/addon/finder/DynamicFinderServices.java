@@ -42,7 +42,8 @@ public interface DynamicFinderServices {
     List<JavaSymbolName> getFinders(MemberDetails memberDetails, String plural,
             int depth, Set<JavaSymbolName> exclusions);
     
-    List<JavaSymbolName> getReferenceFinders(MemberDetails memberDetails, 
+    List<JavaSymbolName> getReferenceFinders(
+    		MemberDetails memberDetails, 
     	    String plural,
     		FieldMetadata reference, 
     		List<FieldMetadata> referenceFields, 
@@ -68,11 +69,18 @@ public interface DynamicFinderServices {
      *         used in a JPA named query (null if the finder is unable to be
      *         built at this time)
      */
-    QueryHolder getQueryHolder(MemberDetails memberDetails,
-            JavaSymbolName finderName, String plural, String entityName);
+    QueryHolder getQueryHolder(
+			MemberDetails memberDetails,
+            JavaSymbolName finderName, 
+            String plural, 
+            String entityName);
     
-    QueryHolder getReferenceQueryHolder(MemberDetails memberDetails,
-            JavaSymbolName finderName, String plural, String entityName);
+    QueryHolder getReferenceQueryHolder(
+    		MemberDetails rootMemberDetails,
+    		MemberDetails referenceMemberDetails,
+            JavaSymbolName finderName, 
+            String rootPlural, 
+            String rootEntityName);
     
     QueryHolder getCountQueryHolder(MemberDetails memberDetails,
             JavaSymbolName finderName, String plural, String entityName);

@@ -117,12 +117,50 @@ public class FinderOperationsImpl implements FinderOperations {
         // Confirm they typed a valid finder name
         final MemberDetails memberDetails = memberDetailsScanner
                 .getMemberDetails(getClass().getName(), cid);
-        if (dynamicFinderServices.getQueryHolder(memberDetails, finderName,
+        if ((dynamicFinderServices.getQueryHolder(memberDetails, finderName,
                 jpaActiveRecordMetadata.getPlural(),
-                jpaActiveRecordMetadata.getEntityName()) == null) {
-            LOGGER.warning("Finder name '" + finderName.getSymbolName()
-                    + "' either does not exist or contains an error");
-            return;
+                jpaActiveRecordMetadata.getEntityName()) == null)) {
+        	
+        	// TODO check reference QueryHolder
+        	/*boolean foundFinder = false;
+        	
+        	for (final FieldMetadata field : memberDetails.getFields()) {
+	        	SortedSet<String> sortedFieldFinders;
+	        	try {
+	        		sortedFieldFinders = listFindersFor(field.getFieldType(), 1);
+	        	} catch (Exception e) {
+	        		continue;
+	        	}   
+	        	if (sortedFieldFinders.size() <= 0) continue;
+	        	
+	        	final List<JavaSymbolName> fieldFinders = dynamicFinderServices.getReferenceFinders(
+	        			memberDetails, 
+	        			jpaActiveRecordMetadata.getPlural(), 
+	                    field, 
+	                    getFinderFieldsForField(field.getFieldType()), 
+	                    depth, 
+	                    exclusions);
+	        	
+	        	for (final JavaSymbolName finder : fieldFinders) {
+	                // Avoid displaying problematic finders
+	                if(dynamicFinderServices.getReferenceQueryHolder(
+	    				memberDetails,
+	    				getMemberDetailsForField(field.getFieldType())
+	    				finderName,
+	                    jpaActiveRecordMetadata.getPlural(),
+	                    jpaActiveRecordMetadata.getEntityName()) != null) foundFinder = true;
+	        	 
+        	}
+	        	
+	        if (!foundFinder) {
+	            LOGGER.warning("Finder name '" + finderName.getSymbolName()
+	                    + "' either does not exist or contains an error");
+	            return;
+	        }*/
+	        
+	        //LOGGER.warning("Finder name '" + finderName.getSymbolName()
+            //        + "' either does not exist or contains an error");
+            //return;
         }
 
         // Make a destination list to store our final attributes
@@ -282,21 +320,31 @@ public class FinderOperationsImpl implements FinderOperations {
         return result;
     }
     
-    /*private List<FieldMetadata> getFieldForField(final FieldMetadata referenceField) {
-    	final String id = typeLocationService.getPhysicalTypeIdentifier(referenceField.getFieldType());
-    	final ClassOrInterfaceTypeDetails cid = typeLocationService.getTypeDetails(id);
-    	final MemberDetails memberDetails = memberDetailsScanner.getMemberDetails(referenceField.getFieldType().getClass().getName(), cid);
-    	
-    	return memberDetails.getFields();
-    }*/
-    
     private List<FieldMetadata> getFinderFieldsForField(final JavaType field) {
+    	
     	final String id = typeLocationService.getPhysicalTypeIdentifier(field);
     	final ClassOrInterfaceTypeDetails cid = typeLocationService.getTypeDetails(id);
     	final MemberDetails memberDetails = memberDetailsScanner.getMemberDetails(field.getClass().getName(), cid);
     	
     	return memberDetails.getFields();
     }
+    
+    // Return member details for class
+    private MemberDetails getMemberDetailsForField(final JavaType typeName) {
+    	final String id = typeLocationService.getPhysicalTypeIdentifier(typeName);
+    	
+    	final JavaType javaType = PhysicalTypeIdentifier.getJavaType(id);
+    	final LogicalPath path = PhysicalTypeIdentifier.getPath(id);
+    	
+    	final PhysicalTypeMetadata physicalTypeMetadata = (PhysicalTypeMetadata) metadataService
+                .get(PhysicalTypeIdentifier.createIdentifier(javaType, path));
+    	
+    	final ClassOrInterfaceTypeDetails cid = physicalTypeMetadata.getMemberHoldingTypeDetails();
+    	
+    	return memberDetailsScanner.getMemberDetails(typeName.getClass().getName(), cid);
+    }
+    
+    
     
     // Return only filter for reference filtering
     public SortedSet<String> listReferenceFindersFor(final JavaType typeName,
@@ -384,8 +432,12 @@ public class FinderOperationsImpl implements FinderOperations {
         	for (final JavaSymbolName finder : fieldFinders) {
                 // Avoid displaying problematic finders
                 try {
+                	final MemberDetails referenceMemberDetails = getMemberDetailsForField(field.getFieldType());
                     final QueryHolder queryHolder = dynamicFinderServices
-                    		.getReferenceQueryHolder(memberDetails, finder,
+                    		.getReferenceQueryHolder(
+                    				memberDetails,
+                    				referenceMemberDetails, //TODO remove this if not needed
+                    				finder,
                                     jpaActiveRecordMetadata.getPlural(),
                                     jpaActiveRecordMetadata.getEntityName());
                     final List<JavaSymbolName> parameterNames = queryHolder
