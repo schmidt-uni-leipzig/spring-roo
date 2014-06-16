@@ -37,52 +37,159 @@ public class ConstraintsCommands implements CommandMarker { // All command types
      * 
      * @return true (default) if the command should be visible at this stage, false otherwise
      */
-    @CliAvailabilityIndicator({ "constraints setup", "constraints add", "constraints all" })
+    @CliAvailabilityIndicator({ "constraints setup", "constraints equals", "constraints notEquals", "constraints intersected", "constraints notIntersected", "constraints rawExpression" })
     public boolean isCommandAvailable() {
         return operations.isCommandAvailable();
+    }
+    
+    
+    // ----- BEGIN ----- SIMPLE CONSTRAINT DEFINITIONS ----- BEGIN -----
+    
+    
+    /**
+     * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+     * 
+     * @param class 
+     * @param field1 
+     * @param field2
+     * @param message 
+     */
+    @CliCommand(value = "constraints equals", help = "Defines an equals constraint.")
+    public void equals(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+		) JavaType paramClass,
+		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
+		) String field1,
+		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
+		) String field2,
+		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
+		) String message
+    ){
+		//convert input into expression
+		String expression = field1 + ".equals("+field2+")";
+		
+		operations.annotateConstraintRaw(paramClass, expression, message, null);
     }
     
     /**
      * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
      * 
-     * @param type 
-     * @param attribute 
-     * @param scope 
+     * @param class 
+     * @param field1 
+     * @param field2
+     * @param message 
      */
-    @CliCommand(value = "constraints add", help = "Defines a certain constrait szenario")
-    public void add(
-		@CliOption(
-			key = "type", 
-			mandatory = true, 
-			help = "Java method name thats suppose to validate the annotation with"
-		) String paramType,
+    @CliCommand(value = "constraints notEquals", help = "Defines a not equals constraint.")
+    public void notEquals(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+		) JavaType paramClass,
+		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
+		) String field1,
+		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
+		) String field2,
+		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
+		) String message
+    ){
+    	//convert input into expression
+		String expression = "!" + field1 + ".equals("+field2+")";
+		
+		operations.annotateConstraintRaw(paramClass, expression, message, null);
+    }
+    
+    /**
+     * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+     * 
+     * @param class 
+     * @param field1 
+     * @param field2
+     * @param message 
+     */
+    @CliCommand(value = "constraints intersected", help = "Defines an intersected constraint.")
+    public void intersected(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+		) JavaType paramClass,
+		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
+		) String field1,
+		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
+		) String field2,
+		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
+		) String message
+    ){
+    	//convert input into expression
+		String expression = "TODO intersectedExpression"; 	//TODO Intersected Expression!!!!!!
+		
+		operations.annotateConstraintRaw(paramClass, expression, message, null);
+    }
+    
+    /**
+     * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+     * 
+     * @param class 
+     * @param field1 
+     * @param field2
+     * @param message 
+     */
+    @CliCommand(value = "constraints notIntersected", help = "Defines a not intersected constraint.")
+    public void notIntersected(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+		) JavaType paramClass,
+		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
+		) String field1,
+		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
+		) String field2,
+		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
+		) String message
+    ){
+    	//convert input into expression
+		String expression = "TODO notIntersectedExpression"; 	//TODO NotIntersected Expression!!!!!!
+		
+		operations.annotateConstraintRaw(paramClass, expression, message, null);
+    }
+    
+    
+    // ----- END ----- SIMPLE CONSTRAINT DEFINITIONS ----- END -----
+    
+    // ----- BEGIN ----- RAW CONSTRAINT DEFINITIONS ----- BEGIN -----
+    
+    
+    /**
+     * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+     * 
+     * @param expression 
+     * @param class 
+     * @param message 
+     */
+    @CliCommand(value = "constraints rawExpression", help = "Defines a custom constraint szenario")
+    public void rawExpression(
 		@CliOption(
 			key = "class", 
 			mandatory = true, 
 			help = "The class (e.g. from java type entity) to apply this constraint annotation to."
 		) JavaType paramClass,
 		@CliOption(
-			key = "field1", 
+			key = "expression", 
 			mandatory = true, 
-			help = "Fieldname (String)"
-		) String paramField1,
+			help = "Raw expression to validate the annotation with"
+		) String rawExpression,
 		@CliOption(
-			key = "field2", 
+			key = "message", 
 			mandatory = true, 
-			help = "Fieldname (String)"
-		) String paramField2
+			help = "Message text (String)"
+		) String message,
+		@CliOption(
+			key = "applyIf", 
+			mandatory = false, 
+			help = "TODO" 			//TODO
+		) String applyIf
     ){
-    		operations.annotateConstraint(paramType, paramClass, paramField1, paramField2);
+    		operations.annotateConstraintRaw(paramClass, rawExpression, message, applyIf);
     }
     
-    /**
-     * This method registers a command with the Roo shell. It has no command attribute.
-     * 
-     */
-    @CliCommand(value = "constraints all", help = "Shows all methods in Constraints addon")
-    public void all() {
-        operations.annotateAll();
-    }
+    
+    
+    // ----- END ----- RAW CONSTRAINT DEFINITIONS ----- END -----
+    
+    
     
     /**
      * This method registers a command with the Roo shell. It has no command attribute.

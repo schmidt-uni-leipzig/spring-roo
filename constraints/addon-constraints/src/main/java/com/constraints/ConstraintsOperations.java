@@ -15,23 +15,14 @@ public interface ConstraintsOperations {
      * @return true if it should be available, otherwise false
      */
     boolean isCommandAvailable();
-
-    /**
-     * Annotate the provided Java type with the trigger of this add-on
-     */
-    void annotateType(JavaType type);
-    
-    /**
-     * Annotate all Java types with the trigger of this add-on
-     */
-    void annotateAll();
     
     /**
      * Setup all add-on artifacts (dependencies in this case)
      */
     void setup();
+    
     /**
-     * Annotate Constraint
+     * Annotate Raw Expression Constraint
      */
-    void annotateConstraint(String paramType, JavaType paramClass, String paramField1, String paramField2);
+    void annotateConstraintRaw(JavaType paramClass, String expression, String message, String applyIf);
 }

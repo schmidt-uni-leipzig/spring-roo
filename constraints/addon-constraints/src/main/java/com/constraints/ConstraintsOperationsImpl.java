@@ -12,7 +12,10 @@ import org.springframework.roo.classpath.TypeManagementService;
 import org.springframework.roo.classpath.details.MemberFindingUtils;
 import org.springframework.roo.classpath.details.ClassOrInterfaceTypeDetails;
 import org.springframework.roo.classpath.details.ClassOrInterfaceTypeDetailsBuilder;
+import org.springframework.roo.classpath.details.annotations.AnnotationAttributeValue;
 import org.springframework.roo.classpath.details.annotations.AnnotationMetadataBuilder;
+import org.springframework.roo.classpath.details.annotations.StringAttributeValue;
+import org.springframework.roo.model.JavaSymbolName;
 import org.springframework.roo.model.JavaType;
 import org.springframework.roo.project.ProjectOperations;
 import org.springframework.roo.project.Dependency;
@@ -21,6 +24,7 @@ import org.springframework.roo.project.DependencyType;
 import org.springframework.roo.project.Repository;
 import org.springframework.roo.support.util.XmlUtils;
 import org.w3c.dom.Element;
+//import cz.jirutka.validator.spring.SpELAssert;
 
 /**
  * Implementation of operations this add-on offers.
@@ -50,45 +54,18 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 		// Check if a project has been created
 		return projectOperations.isFocusedProjectAvailable();
 	}
-
-	/** {@inheritDoc} */
-	public void annotateType(JavaType javaType) {
-		// Use Roo's Assert type for null checks
-		Validate.notNull(javaType, "Java type required");
-
-		// Obtain ClassOrInterfaceTypeDetails for this java type
-		ClassOrInterfaceTypeDetails existing = typeLocationService.getTypeDetails(javaType);
-
-		// Test if the annotation already exists on the target type
-		if (existing != null && MemberFindingUtils.getAnnotationOfType(existing.getAnnotations(), new JavaType(RooConstraints.class.getName())) == null) {
-			ClassOrInterfaceTypeDetailsBuilder classOrInterfaceTypeDetailsBuilder = new ClassOrInterfaceTypeDetailsBuilder(existing);
-			
-			// Create JavaType instance for the add-ons trigger annotation
-			JavaType rooRooConstraints = new JavaType(RooConstraints.class.getName());
-
-			// Create Annotation metadata
-			AnnotationMetadataBuilder annotationBuilder = new AnnotationMetadataBuilder(rooRooConstraints);
-			
-			// Add annotation to target type
-			classOrInterfaceTypeDetailsBuilder.addAnnotation(annotationBuilder.build());
-			
-			// Save changes to disk
-			typeManagementService.createOrUpdateTypeOnDisk(classOrInterfaceTypeDetailsBuilder.build());
-		}
-	}
 	
 	/** {@inheritDoc} */
-	public void annotateConstraint(
-		String paramType, 
-		JavaType paramClass, 
-		String paramField1, 
-		String paramField2
+	public void annotateConstraintRaw(
+		JavaType paramClass,
+		String rawExpression,
+		String message,
+		String applyIf
 	){
 		// Use Roo's Assert type for null checks
-		Validate.notNull(paramType, "Parameter --type is required");
 		Validate.notNull(paramClass, "Parameter --class is required");
-		Validate.notNull(paramField1, "Parameter --field1 is required");
-		Validate.notNull(paramField2, "Parameter --field2 is required");
+		Validate.notNull(rawExpression, "Parameter --expression is required");
+		Validate.notNull(message, "Parameter --message is required");
 
 		// Obtain ClassOrInterfaceTypeDetails for this java type
 		ClassOrInterfaceTypeDetails existing = typeLocationService.getTypeDetails(paramClass);
@@ -98,30 +75,42 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 			existing != null 
 			&& MemberFindingUtils.getAnnotationOfType(
 					existing.getAnnotations(), 
-					new JavaType(RooConstraints.class.getName())
+					new JavaType(SpELAssertList.class.getName())//RooConstraints.class.getName())
 				) == null
 			){
 			ClassOrInterfaceTypeDetailsBuilder classOrInterfaceTypeDetailsBuilder = new ClassOrInterfaceTypeDetailsBuilder(existing);
 			
 			// Create JavaType instance for the add-ons trigger annotation
-			JavaType rooRooConstraints = new JavaType(RooConstraints.class.getName());
+			JavaType rooSpELAssertList = new JavaType(SpELAssertList.class.getName());//"cz.jirutka.validator.spring.SpELAssert");//RooConstraints.class.getName());
 
+			
+//			// Create JavaType instance for the add-ons trigger annotation
+//			JavaType rooSpELAssert = new JavaType(SpELAssert.class.getName());
+			
+			// Add parameters to the annotation
+			final List<AnnotationAttributeValue<?>> rooConstraintsAttributes = new ArrayList<AnnotationAttributeValue<?>>();
+			rooConstraintsAttributes.add(new StringAttributeValue(new JavaSymbolName("value"), rawExpression));
+			rooConstraintsAttributes.add(new StringAttributeValue(new JavaSymbolName("message"), message));
+			if (applyIf != null){
+				rooConstraintsAttributes.add(new StringAttributeValue(new JavaSymbolName("applyIf"), applyIf));
+			}
+			
+//			// Add parameters to the annotation
+//			final List<AnnotationAttributeValue<?>> rooConstraintsListAttributes = new ArrayList<AnnotationAttributeValue<?>>();
+//			rooConstraintsListAttributes.add(new StringAttributeValue(new JavaSymbolName("value"), rooSpELAssert));
+			
+//			JavaType test = JavaType.listOf(rooSpELAssert); // AnnotationMetadataBuilder nochmal checken
+			// sed 's/<a>/<b>/g' file
+			// stackoverflow fragen
+			
 			// Create Annotation metadata
-			AnnotationMetadataBuilder annotationBuilder = new AnnotationMetadataBuilder(rooRooConstraints);
+			AnnotationMetadataBuilder annotationBuilder = new AnnotationMetadataBuilder(rooSpELAssertList, rooConstraintsAttributes);
 			
 			// Add annotation to target type
 			classOrInterfaceTypeDetailsBuilder.addAnnotation(annotationBuilder.build());
 			
 			// Save changes to disk
 			typeManagementService.createOrUpdateTypeOnDisk(classOrInterfaceTypeDetailsBuilder.build());
-		}
-	}
-
-	/** {@inheritDoc} */
-	public void annotateAll() {
-		// Use the TypeLocationService to scan project for all types with a specific annotation
-		for (JavaType type: typeLocationService.findTypesWithAnnotation(new JavaType("org.springframework.roo.addon.javabean.RooJavaBean"))) {
-			annotateType(type);
 		}
 	}
 	

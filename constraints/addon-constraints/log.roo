@@ -1,0 +1,488 @@
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 00:20:52
+addon create advanced --topLevelPackage com.constraints --projectName constraints-addon
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.tutorial.addontest
+// [failed] osgi uninstall --bundleSymbolicName com.bugaddon
+// [failed] osgi uninstall --bundleSymbolicName com.tutorail.addontest1
+osgi uninstall --bundleSymbolicName com.tutorial.addontest1
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 00:27:32
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 14:19:37
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 14:21:09
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 15:35:29
+perform assembly
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 15:55:00
+perform assembly
+perform assembly
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 15:56:31
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 16:01:19
+perform assembly
+osgi ps
+// [failed] osgi uninstall --bundleSymbolicName com.tutorial.*
+osgi uninstall --bundleSymbolicName com.tutorial.addonbug
+osgi ps
+osgi uninstall --bundleSymbolicName com.tutorial.addongnah
+osgi uninstall --bundleSymbolicName com.tutorial.addontest
+osgi uninstall --bundleSymbolicName com.tutorial.addontest1
+osgi uninstall --bundleSymbolicName com.tutorial.addontuto1
+osgi ps
+osgi uninstall --bundleSymbolicName com.tutorial.gnahaddon
+osgi uninstall --bundleSymbolicName com.tutorial.tutaddon
+osgi uninstall --bundleSymbolicName com.tutorial.tutoaddon1
+osgi ps
+osgi uninstall --bundleSymbolicName de.bugaddon
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT-assembly.zip
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 16:04:29
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 16:14:02
+perform assembly
+perform assembly
+perform assembly
+osgi ps
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 16:30:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 16:47:31
+perform assembly
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 16:48:44
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 16:49:19
+perform assembly
+perform assembly
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+osgi uninstall --bundleSymbolicName com.constraints
+osgi ps
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 17:11:57
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 11:21:16
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 11:40:26
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 11:40:48
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 11:46:06
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 11:46:11
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 11:46:50
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 11:46:55
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+perform assembly
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 11:58:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 11:58:51
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 11:59:15
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 11:59:23
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 11:59:48
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 11:59:55
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 12:01:36
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 12:01:44
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 12:06:15
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 13:25:35
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 13:26:11
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 13:26:21
+perform assembly
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 13:26:41
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 13:30:04
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+perform clean
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 13:45:53
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 13:47:03
+perform assembly
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 13:47:46
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 13:49:46
+osgi ps
+osgi start --url file:///Users/surfable/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 13:50:38
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 16:24:24
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 16:46:47
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-11 21:24:50
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-11 21:25:50
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-11 21:28:01
+osgi uninstall --bundleSymbolicName com.constraints
+osgi ps
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-11 21:28:40
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-12 00:03:04
+perform assembly
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-12 00:09:31
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-12 00:16:10
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-12 00:16:43
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-12 14:58:51
+perform eclipse
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-12 15:01:42
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-12 15:05:11
+osgi uninstall --bundleSymbolicName com.constraints
+osgi ps
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-12 15:06:44
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-12 16:48:09
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-12 16:48:47
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-12 17:17:59
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-12 17:20:00
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-12 17:35:57
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+perform assembly
+perform assembly
+perform assembly -e
+perform assembly 
+perform assembly 
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+perform assembly 
+perform assembly 
+perform assembly 
+perform assembly 
+perform assembly 
+perform assembly 
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-12 17:47:55
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-12 17:48:01
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-12 17:48:05
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 17:04:31
+perform assembly
+perform assembly
+perform assembly
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 17:11:44
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 17:12:00
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 17:13:05
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 17:13:15
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 17:14:15
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 17:14:19
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 17:14:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 17:14:34
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 17:14:44
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 17:18:36
+perform assembly
+osgi ps
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 17:20:07
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 17:20:56
+perform assembly
+perform assembly
+// [failed] osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 18:07:25
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 18:07:35
+perform assembly
+perform eclipse
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 18:11:54
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 18:12:02
+perform assembly
+perform eclipse
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 18:12:35
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 18:24:17
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 18:24:57
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 18:25:48
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 18:26:11
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 19:15:07
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 19:15:40
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 19:15:44
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 19:25:59
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-13 19:26:05
+// [failed] osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-13 19:28:19
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 13:46:35
+perform assembly
+perform assembly
+perform assembly
+perform assembly
+osgi ps
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 13:53:25
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 14:35:27
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 14:35:50
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 14:36:28
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 14:37:26
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 18:26:12
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 18:28:25
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 19:13:07
+perform assembly
+perform assembly
+perform assembly
+osgi ps
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 21:11:58
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 21:18:02
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 21:18:23
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 21:20:26
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 21:20:47
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 21:43:48
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 21:44:11
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 21:45:30
+osgi ps
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 21:46:45
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 21:49:39
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 21:50:02
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 23:01:00
+// [failed] osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+// [failed] osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 23:01:32
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 23:26:08
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 23:26:46
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 23:29:08
+perform assembly
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 23:29:40
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 23:33:39
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 23:34:10
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 23:35:25
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 23:36:50
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-14 23:54:26
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi ps
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi ps
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-14 23:55:03
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-16 13:22:41
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+perform assembly
+osgi ps
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-16 13:31:50
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-16 13:31:54
+osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+perform assembly
+// [failed] osgi uninstall --bundleSymbolicName com.constraints
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+// [failed] osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
+osgi uninstall --bundleSymbolicName com.constraints
+perform assembly
+osgi start --url file:///home/alex/WINPRIVATE/Dropbox/Roo_Praktikum/Fabian/Projects/constraints-addon/target/com.constraints-0.1.0.BUILD-SNAPSHOT.jar
