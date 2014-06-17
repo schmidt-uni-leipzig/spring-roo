@@ -24,5 +24,10 @@ public interface ConstraintsOperations {
     /**
      * Annotate Raw Expression Constraint
      */
-    void annotateConstraintRaw(JavaType paramClass, String expression, String message, String applyIf);
+    void annotateConstraintRaw(JavaType javaType, String expression, String message, String applyIf, JavaType helpers);
+    
+//    /**
+//     * Remove SpELAssertList annotation from class
+//     */
+// 	void removeAnnotation(JavaType javaType);
 }

@@ -1,5 +1,7 @@
 package com.constraints;
 
+import java.util.ArrayList;
+
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
@@ -41,11 +43,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
     public boolean isCommandAvailable() {
         return operations.isCommandAvailable();
     }
-    
-    
-    // ----- BEGIN ----- SIMPLE CONSTRAINT DEFINITIONS ----- BEGIN -----
-    
-    
+
     /**
      * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
      * 
@@ -57,18 +55,20 @@ public class ConstraintsCommands implements CommandMarker { // All command types
     @CliCommand(value = "constraints equals", help = "Defines an equals constraint.")
     public void equals(
 		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
-		) JavaType paramClass,
+		) JavaType javaType,
 		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
 		) String field1,
 		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
 		) String field2,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
-		) String message
+		) String message,
+		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		) String applyIf
     ){
 		//convert input into expression
 		String expression = field1 + ".equals("+field2+")";
 		
-		operations.annotateConstraintRaw(paramClass, expression, message, null);
+		operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
     }
     
     /**
@@ -82,18 +82,20 @@ public class ConstraintsCommands implements CommandMarker { // All command types
     @CliCommand(value = "constraints notEquals", help = "Defines a not equals constraint.")
     public void notEquals(
 		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
-		) JavaType paramClass,
+		) JavaType javaType,
 		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
 		) String field1,
 		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
 		) String field2,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
-		) String message
+		) String message,
+		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		) String applyIf
     ){
     	//convert input into expression
 		String expression = "!" + field1 + ".equals("+field2+")";
 		
-		operations.annotateConstraintRaw(paramClass, expression, message, null);
+		operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
     }
     
     /**
@@ -107,18 +109,20 @@ public class ConstraintsCommands implements CommandMarker { // All command types
     @CliCommand(value = "constraints intersected", help = "Defines an intersected constraint.")
     public void intersected(
 		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
-		) JavaType paramClass,
+		) JavaType javaType,
 		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
 		) String field1,
 		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
 		) String field2,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
-		) String message
+		) String message,
+		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		) String applyIf
     ){
     	//convert input into expression
 		String expression = "TODO intersectedExpression"; 	//TODO Intersected Expression!!!!!!
 		
-		operations.annotateConstraintRaw(paramClass, expression, message, null);
+		operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
     }
     
     /**
@@ -132,24 +136,21 @@ public class ConstraintsCommands implements CommandMarker { // All command types
     @CliCommand(value = "constraints notIntersected", help = "Defines a not intersected constraint.")
     public void notIntersected(
 		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
-		) JavaType paramClass,
+		) JavaType javaType,
 		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
 		) String field1,
 		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
 		) String field2,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
-		) String message
+		) String message,
+		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		) String applyIf
     ){
     	//convert input into expression
 		String expression = "TODO notIntersectedExpression"; 	//TODO NotIntersected Expression!!!!!!
 		
-		operations.annotateConstraintRaw(paramClass, expression, message, null);
+		operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
     }
-    
-    
-    // ----- END ----- SIMPLE CONSTRAINT DEFINITIONS ----- END -----
-    
-    // ----- BEGIN ----- RAW CONSTRAINT DEFINITIONS ----- BEGIN -----
     
     
     /**
@@ -161,35 +162,19 @@ public class ConstraintsCommands implements CommandMarker { // All command types
      */
     @CliCommand(value = "constraints rawExpression", help = "Defines a custom constraint szenario")
     public void rawExpression(
-		@CliOption(
-			key = "class", 
-			mandatory = true, 
-			help = "The class (e.g. from java type entity) to apply this constraint annotation to."
-		) JavaType paramClass,
-		@CliOption(
-			key = "expression", 
-			mandatory = true, 
-			help = "Raw expression to validate the annotation with"
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+		) JavaType javaType,
+		@CliOption( key = "expression", mandatory = true, help = "Raw expression to validate the annotation with"
 		) String rawExpression,
-		@CliOption(
-			key = "message", 
-			mandatory = true, 
-			help = "Message text (String)"
+		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
 		) String message,
-		@CliOption(
-			key = "applyIf", 
-			mandatory = false, 
-			help = "TODO" 			//TODO
-		) String applyIf
+		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text" 			//TODO
+		) String applyIf,
+		@CliOption(	key = "helpers", mandatory = false, help = "TODO helpers text"			//TODO
+		) JavaType helpers
     ){
-    		operations.annotateConstraintRaw(paramClass, rawExpression, message, applyIf);
+    		operations.annotateConstraintRaw(javaType, rawExpression, message, applyIf, helpers);
     }
-    
-    
-    
-    // ----- END ----- RAW CONSTRAINT DEFINITIONS ----- END -----
-    
-    
     
     /**
      * This method registers a command with the Roo shell. It has no command attribute.
