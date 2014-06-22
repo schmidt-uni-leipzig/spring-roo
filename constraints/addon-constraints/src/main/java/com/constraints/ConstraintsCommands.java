@@ -46,7 +46,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	}
 	
 	/**
-	 * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
 	 * @param fields
@@ -87,11 +87,10 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 				for (int j=i+1; j<list.size(); j++){
 					// Create expression
     				expression = list.get(i)+".equals("+list.get(j)+")";
-    				// Perform annotation
-    				operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
     				
-    				// add annotation info
-    				message_return = message_return+newline+"Create Annotation with \""+expression+"\".";
+    				// Perform annotation and add information message to return_message
+    				message_return = message_return + newline + operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
+
     				// add line break (after first annotation)
     				newline = "\n";
     			}
@@ -104,7 +103,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	}
 
 	/**
-	 * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
 	 * @param field1 
@@ -131,7 +130,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	}
 	
 	/**
-	 * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
 	 * @param field1 
@@ -158,7 +157,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	}
 	
 	/**
-	 * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
 	 * @param field1 
@@ -185,7 +184,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	}
 	
 	/**
-	 * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
 	 * @param field1 
@@ -213,7 +212,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	
 	
 	/**
-	 * This method registers a command with the Roo shell. It also offers a mandatory command attribute.
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param expression 
 	 * @param class 
@@ -233,6 +232,19 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 		) JavaType helpers
 	){
 			operations.annotateConstraintRaw(javaType, rawExpression, message, applyIf, helpers);
+	}
+	
+	
+	/**
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
+	 * 
+	 */
+	@CliCommand(value = "constraints removeAll", help = "Remove all constraint annotations in class")
+	public void removeAll(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) where all annotations should be removed."
+		) JavaType javaType
+	) {
+		operations.removeAllAnnoations(javaType);
 	}
 	
 	/**

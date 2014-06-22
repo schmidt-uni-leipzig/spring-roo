@@ -26,7 +26,7 @@ public interface ConstraintsOperations {
     /**
      * Annotate Raw Expression Constraint
      */
-    void annotateConstraintRaw(JavaType javaType, String expression, String message, String applyIf, JavaType helpers);
+    String annotateConstraintRaw(JavaType javaType, String expression, String message, String applyIf, JavaType helpers);
     
     /**
      * Provide and validate shell-string for fieldlist annotations.
@@ -46,6 +46,12 @@ public interface ConstraintsOperations {
      * @return true, if field exists in class. false, if field doesn't exists in class.
      */
     boolean isFieldInClass(String fieldname, JavaType javaType);
+    
+    /**
+     * Remove all Annoations in Class.
+     * @param javaType The Class.
+     */
+    void removeAllAnnoations(JavaType javaType);
     
 //    /**
 //     * Remove SpELAssertList annotation from class

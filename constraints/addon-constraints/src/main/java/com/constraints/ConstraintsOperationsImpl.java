@@ -99,8 +99,19 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 				
 				// check whether field exists in class
 				if (isFieldInClass(fieldname,javaType)){
-					// add valid fieldname to list
-					list.add(fieldname);
+					
+					// check for doubles
+					if (!list.contains(fieldname)){
+						// add valid fieldname to list
+						list.add(fieldname);
+					}
+					else{
+						// clear previous fields in list, because field doesn't exists in class
+						list.clear();
+						// return error message
+						list.add(error_message+"Field \""+ fieldname + "\" exists twice.");
+						return list;
+					}
 				}
 				else{
 					// clear previous fields in list, because field doesn't exists in class
@@ -146,8 +157,9 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 		return existing.declaresField(new JavaSymbolName(fieldname));
 	}
 	
-	/** {@inheritDoc} */
-	public void annotateConstraintRaw(
+	/** {@inheritDoc} 
+	 * @return */
+	public String annotateConstraintRaw(
 		JavaType javaType,
 		String rawExpression,
 		String message,
@@ -206,9 +218,6 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 				annotationBuilder = new AnnotationMetadataBuilder(rooSpELAssertList);
 			}
 			else{
-				// Remove old existing SpELAssertList annotation from class(javaType)
-		    	classOrInterfaceTypeDetailsBuilder.removeAnnotation(rooSpELAssertList);
-				
 				// Create Annotation metadata for the List from EXISTING Annotation
 				annotationBuilder = new AnnotationMetadataBuilder(existingAnnotationMetaData);
 				// Get all Attributes of Annotation
@@ -228,11 +237,15 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 				// Check whether new annotation is NOT in old annotations list
 				// (with oldAnnotationList, because its more understandable, CHANGE TO newAnnoationa List, IF not equal!!!)
 				if (!containsAnnotation(oldAnnotationsList, newAnnotation)){
+					// Remove old existing SpELAssertList annotation from class(javaType)
+			    	classOrInterfaceTypeDetailsBuilder.removeAnnotation(rooSpELAssertList);
+					
 					// Then add new inner annotation to the list
 					annotationsList.add(newAnnotation);
 				}
 				else{
-					//TODO Exception Message, that Constraint (value)
+					// Break method and return error message, that Constraint (value) already exists in class
+					return "Annotation \""+ rawExpression + "\" already exists in class \"" + javaType.getSimpleTypeName() + "\"";
 				}
 			}
 			
@@ -245,6 +258,7 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 			// Save changes to disk
 			typeManagementService.createOrUpdateTypeOnDisk(classOrInterfaceTypeDetailsBuilder.build());
 		}
+		return "Create Annotation with \"" + rawExpression + "\".";
 	}
 	
 	// Check whether old annotations list contains the new annotation
@@ -262,8 +276,31 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 		return false;
 	}
 	
-//	// Remove SpELAssertList annotation from class
-//	public void removeAnnotation(JavaType javaType){
+	/** {@inheritDoc} */
+	public void removeAllAnnoations(JavaType javaType){
+		// Use Roo's Assert type for null checks
+		Validate.notNull(javaType, "Java type required");
+
+		// Obtain ClassOrInterfaceTypeDetails for this java type
+		ClassOrInterfaceTypeDetails existing = typeLocationService.getTypeDetails(javaType);
+
+		// Test if the annotation is present
+		if (existing != null && MemberFindingUtils.getAnnotationOfType(existing.getAnnotations(), new JavaType("cz.jirutka.validator.spring.SpELAssertList")) != null) {
+	
+			ClassOrInterfaceTypeDetailsBuilder classOrInterfaceTypeDetailsBuilder = new ClassOrInterfaceTypeDetailsBuilder(existing);
+	
+			JavaType rooTimestamp = new JavaType("cz.jirutka.validator.spring.SpELAssertList");
+	
+			// Add annotation to target type
+			classOrInterfaceTypeDetailsBuilder.removeAnnotation(rooTimestamp);
+	
+			// Save changes to disk
+			typeManagementService.createOrUpdateTypeOnDisk(classOrInterfaceTypeDetailsBuilder.build());
+		}
+	}
+	
+//	// Remove SpELAssert annotation from SpELAssertList annotation in class
+//	public void removeAnnotation(JavaType javaType, String expression){
 //
 //		// Use Roo's Assert type for null checks
 //		Validate.notNull(javaType, "Java type required");
