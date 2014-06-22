@@ -1,6 +1,7 @@
 package com.constraints;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +63,87 @@ public class ConstraintsOperationsImpl implements ConstraintsOperations {
 	public boolean isCommandAvailable() {
 		// Check if a project has been created
 		return projectOperations.isFocusedProjectAvailable();
+	}
+
+	/** {@inheritDoc} */
+	public ArrayList<String> getValidFieldList(
+		String string,
+		JavaType javaType
+	){
+		// initialize list of valid fields or error message
+		ArrayList<String> list = new ArrayList<String>();
+		
+		// check whether input is null or empty
+		if (string == null || string.equals("")){
+			list.add("Fields input is empty.");
+			return list;
+		}
+		
+		// prepare prefix of error message
+		String error_message = "Field list is invalid \""+string+"\": ";
+		
+		// create temp list of input
+		ArrayList<String> raw = new ArrayList<String>(
+			Arrays.asList(
+				string.split(",")
+			)
+		);
+		
+		// check fieldnames in detail
+		for (int i=0; i<(raw.size()); i++){
+			// get fieldname
+			String fieldname = raw.get(i);
+			
+			// check for empty fieldname
+			if (!fieldname.equals("")){
+				
+				// check whether field exists in class
+				if (isFieldInClass(fieldname,javaType)){
+					// add valid fieldname to list
+					list.add(fieldname);
+				}
+				else{
+					// clear previous fields in list, because field doesn't exists in class
+					list.clear();
+					// return error message
+					list.add(error_message+"Field \""+ fieldname + "\" doesn't exists in class \"" + javaType.getSimpleTypeName() + "\"");
+					return list;
+				}
+			}
+			else{
+				// clear previous fields in list, because one element is empty
+				list.clear();
+				// return error message
+				list.add(error_message+"No empty fieldnames allowed.");
+				return list;
+			}
+		}
+		
+		// check whether list is empty or contains only one fieldname
+		switch (list.size()) {
+		case 0:
+			// return error message
+			list.add(error_message+"You need to name at least two valid fields.");
+			return list;
+		case 1:
+			// clear one field in list, because its an invalid list
+			list.clear();
+			// return error message
+			list.add(error_message+"You need more then just one field.");
+			return list;
+		default:
+			// list is completely valid, no error message is needed
+			// return valid list of fieldnames
+			return list;
+		}
+	}
+	
+	/** {@inheritDoc} */
+	public boolean isFieldInClass(String fieldname, JavaType javaType){
+		// Obtain ClassOrInterfaceTypeDetails for this java type
+		ClassOrInterfaceTypeDetails existing = typeLocationService.getTypeDetails(javaType);
+		// return whether class(javaType) declares fieldname
+		return existing.declaresField(new JavaSymbolName(fieldname));
 	}
 	
 	/** {@inheritDoc} */
