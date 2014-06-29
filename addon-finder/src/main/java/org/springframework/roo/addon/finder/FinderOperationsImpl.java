@@ -39,6 +39,9 @@ import org.springframework.roo.project.LogicalPath;
 import org.springframework.roo.project.ProjectOperations;
 import org.springframework.roo.support.logging.HandlerUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Implementation of {@link FinderOperations}.
  * 
@@ -121,46 +124,19 @@ public class FinderOperationsImpl implements FinderOperations {
                 jpaActiveRecordMetadata.getPlural(),
                 jpaActiveRecordMetadata.getEntityName()) == null)) {
         	
-        	// TODO check reference QueryHolder
-        	/*boolean foundFinder = false;
-        	
-        	for (final FieldMetadata field : memberDetails.getFields()) {
-	        	SortedSet<String> sortedFieldFinders;
-	        	try {
-	        		sortedFieldFinders = listFindersFor(field.getFieldType(), 1);
-	        	} catch (Exception e) {
-	        		continue;
-	        	}   
-	        	if (sortedFieldFinders.size() <= 0) continue;
-	        	
-	        	final List<JavaSymbolName> fieldFinders = dynamicFinderServices.getReferenceFinders(
-	        			memberDetails, 
-	        			jpaActiveRecordMetadata.getPlural(), 
-	                    field, 
-	                    getFinderFieldsForField(field.getFieldType()), 
-	                    depth, 
-	                    exclusions);
-	        	
-	        	for (final JavaSymbolName finder : fieldFinders) {
-	                // Avoid displaying problematic finders
-	                if(dynamicFinderServices.getReferenceQueryHolder(
-	    				memberDetails,
-	    				getMemberDetailsForField(field.getFieldType())
-	    				finderName,
-	                    jpaActiveRecordMetadata.getPlural(),
-	                    jpaActiveRecordMetadata.getEntityName()) != null) foundFinder = true;
-	        	 
+        	// TODO do a real check if finder exists
+        	final Pattern tokenPattern = Pattern.compile("^find([A-Z][a-z]*)By([A-Z][a-z]*)Where(.*)");
+        	final Matcher tokenMatcher = tokenPattern.matcher(finderName.toString());
+        	String referenceFinder = null;
+        	while (tokenMatcher.find()) {
+        		referenceFinder = finderName.toString();
         	}
-	        	
-	        if (!foundFinder) {
-	            LOGGER.warning("Finder name '" + finderName.getSymbolName()
+        	
+        	if (referenceFinder == null) {
+		        LOGGER.warning("Finder name '" + finderName.getSymbolName()
 	                    + "' either does not exist or contains an error");
 	            return;
-	        }*/
-	        
-	        //LOGGER.warning("Finder name '" + finderName.getSymbolName()
-            //        + "' either does not exist or contains an error");
-            //return;
+        	}
         }
 
         // Make a destination list to store our final attributes
@@ -428,7 +404,7 @@ public class FinderOperationsImpl implements FinderOperations {
                     getFinderFieldsForField(field.getFieldType()), 
                     depth, 
                     exclusions);
-        	
+        	int i = 10;
         	for (final JavaSymbolName finder : fieldFinders) {
                 // Avoid displaying problematic finders
                 try {
@@ -454,11 +430,18 @@ public class FinderOperationsImpl implements FinderOperations {
                         signature.append(param.getSimpleTypeName()).append(" ")
                                 .append(parameterNames.get(x).getSymbolName());
                     }
-                    result.add(finder.getSymbolName() + "(" + signature + ")");
+                    result.add(i + ".0");
+                    result.add(i + ".0 ========================================");
+                    result.add(i + ".1 " + finder.getSymbolName() + "(" + signature + ")");
+                    result.add(i + ".2 " + queryHolder.getJpaQuery());
+                    result.add(i + ".3 " + queryHolder.getParameterNames().toString());
+                } catch (final RuntimeException e) {
+                	result.add(i + ".0");
+                    result.add(i + ".0 ========================================");
+                    result.add(i + ".1 " + finder.getSymbolName() + " - failure: ");
+                    result.add(i + ".2 " + e.toString());
                 }
-                catch (final RuntimeException e) {
-                    result.add(finder.getSymbolName() + " - failure: ");
-                }
+                i++;
             }
         	
         	//for (final String finder : fieldFinders) {
