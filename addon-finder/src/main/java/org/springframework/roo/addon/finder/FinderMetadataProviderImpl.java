@@ -3,6 +3,8 @@ package org.springframework.roo.addon.finder;
 import java.util.Collections;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
@@ -11,6 +13,7 @@ import org.osgi.service.component.ComponentContext;
 import org.springframework.roo.addon.jpa.activerecord.JpaActiveRecordMetadata;
 import org.springframework.roo.classpath.PhysicalTypeIdentifier;
 import org.springframework.roo.classpath.PhysicalTypeMetadata;
+import org.springframework.roo.classpath.details.FieldMetadata;
 import org.springframework.roo.classpath.details.ItdTypeDetails;
 import org.springframework.roo.classpath.details.MethodMetadata;
 import org.springframework.roo.classpath.itd.AbstractMemberDiscoveringItdMetadataProvider;
@@ -123,9 +126,63 @@ public class FinderMetadataProviderImpl extends
         for (final String methodName : jpaActiveRecordMetadata
                 .getDynamicFinders()) {
             final JavaSymbolName finderName = new JavaSymbolName(methodName);
-            final QueryHolder queryHolder = dynamicFinderServices
-                    .getQueryHolder(memberDetails, finderName, plural,
-                            entityName);
+            QueryHolder queryHolder = null;
+            QueryHolder countQueryHolder = null;
+            
+            if (finderName.toString().indexOf("Where") > 0 ) {
+            	String referenceTokenPlural = "";
+            	
+            	final Pattern tokenPattern = Pattern.compile("^find([A-Z][a-z]*)By([A-Z][a-z]*)Where(.*)");
+            	final Matcher tokenMatcher = tokenPattern.matcher(finderName.toString());
+            	while (tokenMatcher.find()) {
+            		referenceTokenPlural = tokenMatcher.group(2);
+            	}
+            	String referenceToken = referenceTokenPlural.substring(0, referenceTokenPlural.length() - 1).toLowerCase();
+            	
+            	for (final FieldMetadata field : memberDetails.getFields()) {
+            		String fieldName = field.getFieldName().toString();
+            		if (fieldName.equals(referenceToken)) {
+            			final MemberDetails referenceMemberDetails = getMemberDetails(field.getFieldType());
+            			queryHolder = dynamicFinderServices.getReferenceQueryHolder(
+								memberDetails,
+								referenceMemberDetails,
+								finderName, 
+								plural,
+								entityName);
+            			
+            			countQueryHolder = dynamicFinderServices.getReferenceCountQueryHolder(
+	       						 memberDetails, 
+	       						 referenceMemberDetails,
+	       						 finderName, 
+	       						 plural,
+	   						 	 entityName);
+            		}
+            	}
+                
+                //final MemberDetails referenceMemberDetails = getMemberDetailsForField(field.getFieldType());
+                //final MemberDetails referenceMemberDetails = getMemberDetails(new JavaType("com.example.test1.domain.Team"));
+                /*final QueryHolder queryHolder = dynamicFinderServices.getReferenceQueryHolder(
+    										            				memberDetails,
+    										            				referenceMemberDetails,
+    										            				finderName,
+    										            				plural,
+    																	entityName);
+                */
+            } else {
+            	queryHolder = dynamicFinderServices.getQueryHolder(
+								memberDetails, 
+								finderName, 
+								plural,
+								entityName);
+            	
+            	countQueryHolder = dynamicFinderServices.getCountQueryHolder(
+            						 memberDetails, 
+            						 finderName, 
+            						 plural,
+        						 	 entityName);
+            }
+            
+            
             if (queryHolder != null) {
                 queryHolders.put(finderName, queryHolder);
             }
@@ -134,9 +191,7 @@ public class FinderMetadataProviderImpl extends
             methodNameArray[0] = Character.toUpperCase(methodNameArray[0]);
             
             final JavaSymbolName countFinderName = new JavaSymbolName("count" + new String(methodNameArray));
-            final QueryHolder countQueryHolder = dynamicFinderServices
-                    .getCountQueryHolder(memberDetails, finderName, plural,
-                            entityName);
+            
             if (countQueryHolder != null) {
                 queryHolders.put(countFinderName, countQueryHolder);
             }

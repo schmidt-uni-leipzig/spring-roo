@@ -404,7 +404,6 @@ public class FinderOperationsImpl implements FinderOperations {
                     getFinderFieldsForField(field.getFieldType()), 
                     depth, 
                     exclusions);
-        	int i = 10;
         	for (final JavaSymbolName finder : fieldFinders) {
                 // Avoid displaying problematic finders
                 try {
@@ -430,19 +429,11 @@ public class FinderOperationsImpl implements FinderOperations {
                         signature.append(param.getSimpleTypeName()).append(" ")
                                 .append(parameterNames.get(x).getSymbolName());
                     }
-                    result.add(i + ".0");
-                    result.add(i + ".0 ========================================");
-                    result.add(i + ".1 " + finder.getSymbolName() + "(" + signature + ")");
-                    result.add(i + ".2 " + queryHolder.getJpaQuery());
-                    result.add(i + ".3 " + queryHolder.getParameterNames().toString());
+                    result.add(finder.getSymbolName() + "(" + signature + ")");
                 } catch (final RuntimeException e) {
-                	result.add(i + ".0");
-                    result.add(i + ".0 ========================================");
-                    result.add(i + ".1 " + finder.getSymbolName() + " - failure: ");
-                    result.add(i + ".2 " + e.toString());
+                	result.add(finder.getSymbolName() + " - failure");
                 }
-                i++;
-            }
+			}
         	
         	//for (final String finder : fieldFinders) {
         	//}

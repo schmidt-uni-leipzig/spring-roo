@@ -294,13 +294,14 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
         
         final StringBuilder builder = new StringBuilder();
         builder.append("SELECT o FROM ").append(typeName);
-        builder.append(" AS o WHERE id IN (");
+        builder.append(" AS o WHERE " + referenceToken.toLowerCase() + " IN (");
         
     	String jpaQuery = getJpaQuery(referenceTokens, referenceToken,  finderName, referenceTokenPlural, referenceToken);
     	//String jpaQuery = getJpaQuery(referenceTokens, "Team", new JavaSymbolName("findTeamsByDescriptionIsNull"), "Teams", "Team");
         jpaQuery = jpaQuery.replace("SELECT o FROM","SELECT o.id FROM");
         jpaQuery = jpaQuery.replace(" o "," p ");
         jpaQuery = jpaQuery.replace(" o."," p.");
+        jpaQuery = jpaQuery.replace("(o.","(p.");
         
         builder.append(jpaQuery);
     	builder.append(")");
@@ -455,6 +456,10 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
             final String simpleTypeName, final JavaSymbolName finderName,
             final String plural, final String entityName) {
         String jpaQuery = this.getJpaQuery(tokens, simpleTypeName, finderName, plural, entityName);
+        return jpaQuery.replaceFirst("SELECT o FROM ", "SELECT COUNT(o) FROM ");
+    }
+    
+    private String getJpaReferenceCountQuery(String jpaQuery) {
         return jpaQuery.replaceFirst("SELECT o FROM ", "SELECT COUNT(o) FROM ");
     }
 
@@ -661,6 +666,38 @@ public class DynamicFinderServicesImpl implements DynamicFinderServices {
                 finderName, plural);
         final List<JavaSymbolName> parameterNames = getParameterNames(tokens,
                 finderName, plural);
+        return new QueryHolder(jpaQuery, parameterTypes, parameterNames, tokens);
+    }
+    
+    public QueryHolder getReferenceCountQueryHolder(final MemberDetails rootMemberDetails,
+    		final MemberDetails referenceMemberDetails,
+            final JavaSymbolName finderName, final String plural,
+            final String entityName) {
+        Validate.notNull(rootMemberDetails, "Member details required");
+        Validate.notNull(finderName, "Finder name required");
+        Validate.notBlank(plural, "Plural required");
+
+        List<Token> tokens;
+        try {
+            //tokens = tokenize(memberDetails, finderName, plural);
+            tokens = tokenizeReference(referenceMemberDetails, finderName, plural);
+        }
+        catch (final FinderFieldTokenMissingException e) {
+            return null;
+        }
+        catch (final InvalidFinderException e) {
+            return null;
+        }
+        
+        final String simpleTypeName = getConcreteJavaType(rootMemberDetails)
+                .getSimpleTypeName();
+        
+        QueryHolder qh = getReferenceQueryHolder(rootMemberDetails, referenceMemberDetails, finderName, plural, simpleTypeName);
+        
+        final String jpaQuery = getJpaReferenceCountQuery(qh.getJpaQuery());
+        		
+        final List<JavaType> parameterTypes = qh.getParameterTypes();
+        final List<JavaSymbolName> parameterNames = qh.getParameterNames();
         return new QueryHolder(jpaQuery, parameterTypes, parameterNames, tokens);
     }
 
