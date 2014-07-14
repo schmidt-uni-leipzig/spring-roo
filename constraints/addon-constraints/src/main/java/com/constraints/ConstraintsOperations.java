@@ -22,13 +22,18 @@ public interface ConstraintsOperations {
      * Setup all add-on artifacts (dependencies in this case)
      */
     void setup();
-    
-    /**
-     * Annotate Raw Expression Constraint
+	
+     /**
+     * Annotate Simple Constraint with constraintType with list processing
      */
-    String annotateConstraintRaw(JavaType javaType, String expression, String message, String applyIf, JavaType helpers);
+	String annotateConstraintSimple(ConstraintType constraintType, JavaType javaType, String fieldlist, String message, String applyIf);
+	
+	/**
+     * Annotate Simple Constraint with constraintType for a single combination
+     */
+	String annotateConstraintSingle(ConstraintType constraintType, JavaType javaType, String field_subject, String field_object, String message, String applyIf, String newline, String message_return);
     
-    /**
+	/**
      * Provide and validate shell-string for fieldlist annotations.
      * Get valid Field List for class (size()>1) or returns an error Message, if input is invalid (size()==1)
      * 
@@ -41,20 +46,20 @@ public interface ConstraintsOperations {
     /**
      * Check whether field exists in class.
      * 
-     * @param fieldname The name of the field.
-     * @param javaType The class to check.
+     * @param fieldname the name of the field.
+     * @param javaType the class to check.
      * @return true, if field exists in class. false, if field doesn't exists in class.
      */
     boolean isFieldInClass(String fieldname, JavaType javaType);
     
     /**
-     * Remove all Annoations in Class.
-     * @param javaType The Class.
+     * Annotate raw expression constraint
+     */
+    String annotateConstraintRaw(JavaType javaType, String expression, String message, String applyIf, JavaType helpers, AnnotationState state);
+    
+    /**
+     * Remove all annotations in class.
+     * @param javaType the class.
      */
     void removeAllAnnoations(JavaType javaType);
-    
-//    /**
-//     * Remove SpELAssertList annotation from class
-//     */
-// 	void removeAnnotation(JavaType javaType);
 }

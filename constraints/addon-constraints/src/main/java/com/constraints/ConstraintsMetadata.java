@@ -87,6 +87,7 @@ public class ConstraintsMetadata extends AbstractItdTypeDetailsProvidingMetadata
     }
     
     private MethodMetadata getSampleMethod() {
+    
         // Specify the desired method name
         JavaSymbolName methodName = new JavaSymbolName("sampleMethod");
         
@@ -122,6 +123,7 @@ public class ConstraintsMetadata extends AbstractItdTypeDetailsProvidingMetadata
     }
         
     private MethodMetadata methodExists(JavaSymbolName methodName, List<AnnotatedJavaType> paramTypes) {
+    
         // We have no access to method parameter information, so we scan by name alone and treat any match as authoritative
         // We do not scan the superclass, as the caller is expected to know we'll only scan the current class
         for (MethodMetadata method : governorTypeDetails.getDeclaredMethods()) {

@@ -1,8 +1,5 @@
 package com.constraints;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
@@ -24,10 +21,10 @@ import org.springframework.roo.shell.CommandMarker;
 @Component // Use these Apache Felix annotations to register your commands class in the Roo container
 @Service
 public class ConstraintsCommands implements CommandMarker { // All command types must implement the CommandMarker interface
+
 	/**
 	 * Get a reference to the ConstraintsOperations from the underlying OSGi container
 	 */
-	 
 	@Reference private ConstraintsOperations operations;
 	
 	/**
@@ -40,7 +37,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	 * 
 	 * @return true (default) if the command should be visible at this stage, false otherwise
 	 */
-	@CliAvailabilityIndicator({ "constraints setup", "constraints equals", "constraints notEquals", "constraints intersected", "constraints notIntersected", "constraints rawExpression" })
+	@CliAvailabilityIndicator({ "constraints setup", "constraints equals", "constraints notEquals", "constraints contains", "constraints notContains", "constraints greater", "constraints smaller", "constraints rawExpression", "constraints removeRaw", "constraints update","constraints removeAll" })
 	public boolean isCommandAvailable() {
 		return operations.isCommandAvailable();
 	}
@@ -51,165 +48,131 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	 * @param class 
 	 * @param fields
 	 */
-	 /**
-	 *	20.06.14 - Fabian Schlötel - ConstraintsCommands.java
-	 *	Note:
-	 *	public Void equalsList -> public String equalsList (um callback in shell anzuzeigen)
-	 */
-	@CliCommand(value = "constraints equalsList", help = "Defines an equals constraint by list/collection.")
-	public String equalsList(
-		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+	@CliCommand(value = "constraints equals", help = "Defines an equals constraint")
+	public String equals(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
 		) JavaType javaType,
-		@CliOption(key = "fields",	mandatory = true, help = "Fieldnames not valid. Try \"fieldname1,fieldname2,fieldnamen\""
-		) String fields,
+		@CliOption(key = "fieldlist", mandatory = true, help = "Fieldnames to compare against each other. Like \"fieldname1,fieldname2,...\""
+		) String fieldlist,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
 		) String message,
-		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		@CliOption(	key = "applyIf", mandatory = false, help = "ApplyIf SpEL-Expression (String)"
 		) String applyIf
 	){
-		//Prepare Shell Return
-		String message_return = "";
-		
-		//Split shell string for list processing
-		ArrayList<String> list = operations.getValidFieldList(fields,javaType);
-
-		// check whether list contains two or more valid fieldnames to create annotation(s)
-		if(list.size()>1){
-		
-			// Prepare Annotation Expression
-			String expression = "";
-			// prepare empty newline
-			String newline = "";
-			
-			// Add all annotation combinations of fieldnames
-			for (int i=0; i<(list.size()-1); i++){
-			
-				for (int j=i+1; j<list.size(); j++){
-					// Create expression
-    				expression = list.get(i)+".equals("+list.get(j)+")";
-    				
-    				// Perform annotation and add information message to return_message
-    				message_return = message_return + newline + operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
-
-    				// add line break (after first annotation)
-    				newline = "\n";
-    			}
-			}
-		}else{
-			// input was invalid and list contains one error message
-			message_return = list.get(0);
-		}
-		return message_return;
+		return operations.annotateConstraintSimple(ConstraintType.EQUALS, javaType, fieldlist, message, applyIf);
+	}
+	
+	/**
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
+	 * 
+	 * @param class 
+	 * @param fields
+	 */
+	@CliCommand(value = "constraints notEquals", help = "Defines an notEquals constraint")
+	public String notEquals(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
+		) JavaType javaType,
+		@CliOption(key = "fieldlist", mandatory = true, help = "Fieldnames to compare against each other. Like \"fieldname1,fieldname2,...\""
+		) String fieldlist,
+		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
+		) String message,
+		@CliOption(	key = "applyIf", mandatory = false, help = "ApplyIf SpEL-Expression (String)"
+		) String applyIf
+	){
+		return operations.annotateConstraintSimple(ConstraintType.NOTEQUALS, javaType, fieldlist, message, applyIf);
 	}
 
 	/**
 	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
-	 * @param field1 
-	 * @param field2
-	 * @param message 
+	 * @param fields
 	 */
-	@CliCommand(value = "constraints equals", help = "Defines an equals constraint.")
-	public void equals(
-		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+	@CliCommand(value = "constraints contains", help = "Defines a constraint to check intersected strings")
+	public String contains(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
 		) JavaType javaType,
-		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
-		) String field1,
-		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
-		) String field2,
+		@CliOption(key = "field",	mandatory = true, help = "Fieldname is the main field to compare with the others in the fieldlist. (Annotation: \"<field>.contains(<fieldlist_element>)\")"
+		) String field,
+		@CliOption(key = "fieldlist", mandatory = true, help = "Fieldnames to compare against the main field. Like \"fieldname1,fieldname2,...\". (Annotation: \"<field>.contains(<fieldlist_element>)\")"
+		) String fieldlist,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
 		) String message,
-		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		@CliOption(	key = "applyIf", mandatory = false, help = "ApplyIf SpEL-Expression (String)"
 		) String applyIf
 	){
-		//convert input into expression
-		String expression = field1 + ".equals("+field2+")";
-		
-		operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
+		fieldlist = field + "," + fieldlist;
+		return operations.annotateConstraintSimple(ConstraintType.CONTAINS, javaType, fieldlist, message, applyIf);
 	}
 	
 	/**
 	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
-	 * @param field1 
-	 * @param field2
-	 * @param message 
+	 * @param fields
 	 */
-	@CliCommand(value = "constraints notEquals", help = "Defines a not equals constraint.")
-	public void notEquals(
-		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+	@CliCommand(value = "constraints notContains", help = "Defines a constraint to check complemented strings")
+	public String notContains(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
 		) JavaType javaType,
-		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
-		) String field1,
-		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
-		) String field2,
+		@CliOption(key = "field",	mandatory = true, help = "Fieldname is the main field to compare with the others in the fieldlist. (Annotation: \"!<field>.contains(<fieldlist_element>)\")"
+		) String field,
+		@CliOption(key = "fieldlist", mandatory = true, help = "Fieldnames to compare against the main field. Like \"fieldname1,fieldname2,...\". (Annotation: \"!<field>.contains(<fieldlist_element>)\")"
+		) String fieldlist,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
 		) String message,
-		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		@CliOption(	key = "applyIf", mandatory = false, help = "ApplyIf SpEL-Expression (String)"
 		) String applyIf
 	){
-		//convert input into expression
-		String expression = "!" + field1 + ".equals("+field2+")";
-		
-		operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
+		fieldlist = field + "," + fieldlist;
+		return operations.annotateConstraintSimple(ConstraintType.NOTCONTAINS, javaType, fieldlist, message, applyIf);
 	}
 	
 	/**
 	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
-	 * @param field1 
-	 * @param field2
-	 * @param message 
+	 * @param fields
 	 */
-	@CliCommand(value = "constraints intersected", help = "Defines an intersected constraint.")
-	public void intersected(
-		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+	@CliCommand(value = "constraints greater", help = "Defines a greater-then constraint")
+	public String greater(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
 		) JavaType javaType,
-		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
-		) String field1,
-		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
-		) String field2,
+		@CliOption(key = "field",	mandatory = true, help = "Fieldname is the main field to compare with the others in the fieldlist. (Annotation: \"<field> > <fieldlist_element>\")"
+		) String field,
+		@CliOption(key = "fieldlist", mandatory = true, help = "Fieldnames to compare against the main field. Like \"fieldname1,fieldname2,...\". (Annotation: \"<field> > <fieldlist_element>\")"
+		) String fieldlist,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
 		) String message,
-		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		@CliOption(	key = "applyIf", mandatory = false, help = "ApplyIf SpEL-Expression (String)"
 		) String applyIf
 	){
-		//convert input into expression
-		String expression = "TODO intersectedExpression"; 	//TODO Intersected Expression!!!!!!
-		
-		operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
+		fieldlist = field + "," + fieldlist;
+		return operations.annotateConstraintSimple(ConstraintType.GREATER, javaType, fieldlist, message, applyIf);
 	}
 	
 	/**
 	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
 	 * 
 	 * @param class 
-	 * @param field1 
-	 * @param field2
-	 * @param message 
+	 * @param fields
 	 */
-	@CliCommand(value = "constraints notIntersected", help = "Defines a not intersected constraint.")
-	public void notIntersected(
-		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+	@CliCommand(value = "constraints smaller", help = "Defines a smaller-than constraint")
+	public String smaller(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
 		) JavaType javaType,
-		@CliOption(	key = "field1",	mandatory = true, help = "Fieldname (String)"
-		) String field1,
-		@CliOption(	key = "field2", mandatory = true, help = "Fieldname (String)"
-		) String field2,
+		@CliOption(key = "field",	mandatory = true, help = "Fieldname is the main field to compare with the others in the fieldlist. (Annotation: \"<field> < <fieldlist_element>\")"
+		) String field,
+		@CliOption(key = "fieldlist", mandatory = true, help = "Fieldnames to compare against the main field. Like \"fieldname1,fieldname2,...\". (Annotation: \"<field> < <fieldlist_element>\")"
+		) String fieldlist,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
 		) String message,
-		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text"
+		@CliOption(	key = "applyIf", mandatory = false, help = "ApplyIf SpEL-Expression (String)"
 		) String applyIf
 	){
-		//convert input into expression
-		String expression = "TODO notIntersectedExpression"; 	//TODO NotIntersected Expression!!!!!!
-		
-		operations.annotateConstraintRaw(javaType, expression, message, applyIf, null);
+		fieldlist = field + "," + fieldlist;
+		return operations.annotateConstraintSimple(ConstraintType.SMALLER, javaType, fieldlist, message, applyIf);
 	}
-	
 	
 	/**
 	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
@@ -218,22 +181,55 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	 * @param class 
 	 * @param message 
 	 */
-	@CliCommand(value = "constraints rawExpression", help = "Defines a custom constraint szenario")
-	public void rawExpression(
-		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to."
+	@CliCommand(value = "constraints rawExpression", help = "Defines a constraint by a custom SpEL-Expression")
+	public String rawExpression(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
 		) JavaType javaType,
-		@CliOption( key = "expression", mandatory = true, help = "Raw expression to validate the annotation with"
+		@CliOption( key = "expression", mandatory = true, help = "Raw expression to validate the annotation with."
 		) String rawExpression,
 		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
 		) String message,
-		@CliOption(	key = "applyIf", mandatory = false, help = "TODO applyIf text" 			//TODO
+		@CliOption(	key = "applyIf", mandatory = false, help = "ApplyIf SpEL-Expression (String)"
 		) String applyIf,
-		@CliOption(	key = "helpers", mandatory = false, help = "TODO helpers text"			//TODO
+		@CliOption(	key = "helpers", mandatory = false, help = "Helpers Class"
 		) JavaType helpers
 	){
-			operations.annotateConstraintRaw(javaType, rawExpression, message, applyIf, helpers);
+		return operations.annotateConstraintRaw(javaType, rawExpression, message, applyIf, helpers, AnnotationState.NEW);
 	}
 	
+	/**
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
+	 * 
+	 */
+	@CliCommand(value = "constraints removeRaw", help = "Remove specific constraint annotation in class, with matching raw expression")
+	public String removeRaw(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
+		) JavaType javaType,
+		@CliOption( key = "expression", mandatory = true, help = "Raw expression to validate the annotation with."
+		) String rawExpression
+	){
+		return operations.annotateConstraintRaw(javaType, rawExpression, "", "", null, AnnotationState.REMOVE);
+	}
+	
+	/**
+	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
+	 * 
+	 */
+	@CliCommand(value = "constraints update", help = "Update specific constraint annotation in class, with matching expression")
+	public String update(
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) to apply this constraint annotation to"
+		) JavaType javaType,
+		@CliOption( key = "expression", mandatory = true, help = "Raw expression to validate the annotation with."
+		) String rawExpression,
+		@CliOption(	key = "message", mandatory = true, help = "Message text (String)"
+		) String message,
+		@CliOption(	key = "applyIf", mandatory = false, help = "ApplyIf SpEL-Expression (String)"
+		) String applyIf,
+		@CliOption(	key = "helpers", mandatory = false, help = "Helpers Class"
+		) JavaType helpers
+	){
+		return operations.annotateConstraintRaw(javaType, rawExpression, message, applyIf, helpers, AnnotationState.UPDATE);
+	}
 	
 	/**
 	 * This method registers a command with the Roo shell. It also offers mandatory command attributes.
@@ -241,7 +237,7 @@ public class ConstraintsCommands implements CommandMarker { // All command types
 	 */
 	@CliCommand(value = "constraints removeAll", help = "Remove all constraint annotations in class")
 	public void removeAll(
-		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) where all annotations should be removed."
+		@CliOption( key = "class", mandatory = true, help = "The class (e.g. from java type entity) where all annotations should be removed"
 		) JavaType javaType
 	) {
 		operations.removeAllAnnoations(javaType);
