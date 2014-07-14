@@ -5,6 +5,10 @@
     <page:show id="ps_de_unileipzig_authors_model_Author" object="${author}" path="/authors" z="2HGSqsEwI4nXlHNfDGtjPGI+ErM=">
         <field:display field="name" id="s_de_unileipzig_authors_model_Author_name" object="${author}" z="Sfspi2IpBdJ8z9Jr0udCuDLAka4="/>
         <field:display field="surname" id="s_de_unileipzig_authors_model_Author_surname" object="${author}" z="XV/Y0kxGXxVpGh72WLDaTxpWJws="/>
+        <field:display field="age" id="s_de_unileipzig_authors_model_Author_age" object="${author}" z="+eb5Qo5S+sQTQcVfYszhwiY1DlA="/>
         <field:display field="password" id="s_de_unileipzig_authors_model_Author_password" object="${author}" z="WO6flmi48ilKGAqFpimzoEjKsNc="/>
+        <field:display field="passwordConfirm" id="s_de_unileipzig_authors_model_Author_passwordConfirm" object="${author}" z="0vpatjKBN3N2fvqJNlpST00ckvQ="/>
+        <field:display field="isBookAuthor" id="s_de_unileipzig_authors_model_Author_isBookAuthor" object="${author}" z="MTledzWHoyxfxHPHbRdoA9V7rfg="/>
+        <field:display field="isMagazineAuthor" id="s_de_unileipzig_authors_model_Author_isMagazineAuthor" object="${author}" z="X2J5V1uhYWTz/GES8bLeLuyrQuU="/>
     </page:show>
 </div>

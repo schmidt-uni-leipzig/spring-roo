@@ -1,0 +1,232 @@
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-05-30 17:53:20
+project --topLevelPackage de.unileipzig.authors --projectName authors
+jpa setup --provider HIBERNATE --database HYPERSONIC_IN_MEMORY
+entity jpa --class ~.model.Author
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-05-30 18:27:06
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-05-30 18:27:11
+entity jpa --class ~.model.Book
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-05-30 18:27:22
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-05-30 18:27:29
+focus --class ~.model.Author
+field string --fieldName name
+field string --fieldName surname
+field string --fieldName password
+focus --class ~.model.Book
+field string --fieldName title
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-05-31 12:06:58
+focus --class ~.model.Book
+field reference --fieldName leadauthor --type ~.model.Author
+focus --class ~.model.Author
+field set --type ~.model.Book --fieldName books --mappedBy leadauthor --cardinality ONE_TO_MANY 
+web mvc setup
+web mvc all --package ~.web
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-05-31 12:15:44
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-01 22:04:33
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-01 22:05:37
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-01 22:14:25
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-01 22:14:56
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-01 22:24:02
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-01 22:24:21
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-01 23:25:23
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-01 23:25:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 10:28:02
+perform eclipse
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 10:31:43
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 14:51:32
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 14:51:38
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-02 23:29:48
+osgi uninstall --bundleSymbolicName com.constraints
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-02 23:32:02
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 00:35:05
+osgi ps
+osgi uninstall --bundleSymbolicName de.unileipzig.newaddon
+osgi uninstall --bundleSymbolicName de.unileipzig.testaddon
+osgi ps
+osgi ps
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 00:36:59
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 00:41:32
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 00:41:41
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 00:47:31
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 00:47:36
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 09:53:26
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 09:53:34
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-03 12:53:15
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-03 12:53:23
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-30 09:25:03
+constraints rawExpression --class ~.model.Book --expression "title.equals(leadauthor.name)" --message "test"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-30 09:30:00
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-30 09:30:12
+constraints setup
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-30 09:30:50
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-30 09:51:52
+constraints setup
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-30 09:53:55
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-30 09:54:00
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-30 09:54:06
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-30 09:54:13
+constraints notEquals --class ~.model.Author --fields "name,surname" --message "Name and surname should not be equal!"
+constraints removeAll --class ~.model.Author
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-30 09:57:53
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-30 09:59:04
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-30 09:59:13
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-30 09:59:19
+constraints setup
+constraints notEquals --class ~.model.Author --fields "name,surname" --message "Name and surname should not be equal!"
+constraint rawExpression --class ~.model.Author --expression "!password.startsWith(name)" --message "Password should not starts with your name!"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-30 10:03:57
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-30 11:45:16
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-30 11:45:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-10 11:25:24
+field number --fieldName age --type int --class ~.model.Author
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-10 11:26:50
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-10 11:28:59
+field boolean --fieldName isBookAuthor --class ~.model.Author
+field boolean --fieldName isMagazineAuthor --class ~.model.Author
+field reference --fieldName faveBookOfOthers --type ~.model.Book
+field number --fieldName ageConfirm --type int --class ~.model.Author
+field string --fieldName passwordConfirm --class ~.model.Author
+focus --class ~.model.Book
+field reference --fieldName coAuthor --type ~.model.Author
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-10 11:54:57
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-10 12:07:44
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-10 12:24:08
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-10 20:45:43
+constraints equals --class ~.model.Author --fields age,ageConfirm --message "invalid age input"
+constraints notEquals --class ~.model.Author --fields isBookAuthor,isMagazineAuthor --message "you have to choose one side"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-10 22:04:07
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-10 22:38:10
+constraints notEquals --class ~.model.Book --fields leadauthor,coAuthor --message "nope..."
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-10 22:39:25
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-10 23:23:19
+constraints rawExpression --class ~.model.Author --expression "#isEven(age)" --message "age is even" --helpers ~.model.Helpers
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-10 23:39:26
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-10 23:42:48
+constraints update --class ~.model.Author --expression "!#isOdd(age)" --message "age is odd and ageConfirm is even" --applyIf "#isEven(ageConfirm)" --helpers ~.model.Helpers
+constraints rawExpression --class ~.model.Author --expression "!#isOdd(age)" --message "age is odd and ageConfirm is even" --applyIf "#isEven(ageConfirm)" --helpers ~.model.Helpers
+constraints removeRaw --class ~.model.Author --expression "#isEven(age)"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-10 23:53:12
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-11 17:26:01
+constraints complemented --class ~.model.Author --field name --fieldlist password --message "the name should not be a part of the password"
+constraints complemented --class ~.model.Author --field name --fieldlist password,passwordConfirm --message "the name should not be a part of the password"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-11 17:41:08
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-11 17:42:14
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-11 17:43:10
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-11 17:43:15
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-11 17:43:44
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-11 17:43:49
+constraints complemented --class ~.model.Author --field name --fieldlist password --message "the name should not be a part of the password"
+constraints complemented --class ~.model.Author --field name --fieldlist password --message "the name should not be a part of the password"
+constraints complemented --class ~.model.Author --field name --fieldlist password,passwordConfirm --message "the name should not be a part of the password"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-11 17:45:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-11 17:51:13
+constraints complemented --class ~.model.Author --field name --fieldlist password --message "the name should not be a part of the password"
+constraints complemented --class ~.model.Author --field name --fieldlist password,passwordConfirm --message "the name should not be a part of the password"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-11 17:53:25
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-11 18:20:10
+constraints complemented --class ~.model.Author --field name --fieldlist password,passwordConfirm --message "the name should not be a part of the password"
+constraints complemented --class ~.model.Author --field name --fieldlist password --message "the name should not be a part of the password"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-11 18:21:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-11 18:23:06
+constraints greater --class ~.model.Author --field age --fieldlist ageConfirm --message "bla"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-11 18:34:03
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-13 17:58:26
+constraints contains --class ~.model.Author --field password --fieldlist name --message "name should not be a part of password"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-13 18:02:55
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-13 18:05:51
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-13 18:06:12
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 14:36:26
+constraints notContains --class ~.model.Author --field books --fieldlist faveBookOfOthers --message "thats wrong"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 14:40:39
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 15:01:30
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 15:21:53
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 15:30:18
+web mvc all --package ~.web
+perform eclipse
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 15:56:02
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:03:15
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:03:21
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:05:30
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:11:36
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:12:00
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:12:33
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:17:20
+constraints equals --class ~.model.Author --fieldlist "password,passwordConfirm" --message "Password confirmation failed!"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:26:04
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:42:01
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:49:22
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:50:01
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:50:26
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:50:40
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:50:51
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:51:04
+constraints setup
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:53:11
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 16:53:50
+constraints setup
+constraints equals --class ~.model.Author --fieldlist "password,passwordConfir" --message "Password confirmation failed!"
+constraints equals --class ~.model.Author --fieldlist "password,passwordConfirm" --message "Password confirmation failed!"
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 16:56:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-14 17:23:56
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-14 17:46:02
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-15 01:00:55
+quit
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-07-15 01:01:10

@@ -6,7 +6,10 @@
         <table:table data="${authors}" id="l_de_unileipzig_authors_model_Author" path="/authors" z="LslNPwVsf9KHklWYTHVBrobZjxw=">
             <table:column id="c_de_unileipzig_authors_model_Author_name" property="name" z="I69Ru0GeBaJmEsGrgdAE0s3rkzg="/>
             <table:column id="c_de_unileipzig_authors_model_Author_surname" property="surname" z="JxGEP2jSIWilkXogS3JXK49jAj0="/>
+            <table:column id="c_de_unileipzig_authors_model_Author_age" property="age" z="n67MG981RveA5zqjcaC9aBm2hEI="/>
             <table:column id="c_de_unileipzig_authors_model_Author_password" property="password" z="60XAi6dPQhKDr73UbhgUQ8CXTGY="/>
+            <table:column id="c_de_unileipzig_authors_model_Author_passwordConfirm" property="passwordConfirm" z="CUfeT1lZuMI1eEughOyASCbk4cM="/>
+            <table:column id="c_de_unileipzig_authors_model_Author_isBookAuthor" property="isBookAuthor" z="fnWnrGxFxEMkfjkjomAQ2+JdmsI="/>
         </table:table>
     </page:list>
 </div>

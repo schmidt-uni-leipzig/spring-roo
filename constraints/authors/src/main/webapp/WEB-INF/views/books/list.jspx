@@ -6,6 +6,7 @@
         <table:table data="${books}" id="l_de_unileipzig_authors_model_Book" path="/books" z="lFAt7hyK7XzfMHms4NNWmjtNeN8=">
             <table:column id="c_de_unileipzig_authors_model_Book_title" property="title" z="ZAUhpNTFYhQW00A13sEa6HKWVfk="/>
             <table:column id="c_de_unileipzig_authors_model_Book_leadauthor" property="leadauthor" z="EjF2L0Sh8jq4jw+r4SGstBIJBbc="/>
+            <table:column id="c_de_unileipzig_authors_model_Book_coAuthor" property="coAuthor" z="KznfGIMoaKRli/MCXFyu0N80kts="/>
         </table:table>
     </page:list>
 </div>

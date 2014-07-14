@@ -5,5 +5,6 @@
     <page:show id="ps_de_unileipzig_authors_model_Book" object="${book}" path="/books" z="TNndIU7aBinBXn6EIri0sHBR81o=">
         <field:display field="title" id="s_de_unileipzig_authors_model_Book_title" object="${book}" z="EfGYhBFYKEye4ll4ll/ptuGwX4o="/>
         <field:display field="leadauthor" id="s_de_unileipzig_authors_model_Book_leadauthor" object="${book}" z="Zm6G0vZtHt1gH/dVrQJ1J9o1Id8="/>
+        <field:display field="coAuthor" id="s_de_unileipzig_authors_model_Book_coAuthor" object="${book}" z="rWeHfJzBvmTbazCeFRV+/0ZpvHE="/>
     </page:show>
 </div>

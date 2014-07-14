@@ -5,6 +5,7 @@
     <form:create id="fc_de_unileipzig_authors_model_Book" modelAttribute="book" path="/books" render="${empty dependencies}" z="8Mndoyr0lTX1yXTi1TnetdJkDWg=">
         <field:input field="title" id="c_de_unileipzig_authors_model_Book_title" z="owNEi167fGQpJ/UIxcQ4friCVyM="/>
         <field:select field="leadauthor" id="c_de_unileipzig_authors_model_Book_leadauthor" itemValue="id" items="${authors}" path="/authors" z="dcrUezXxpMGYKtn3judEaLp1i+0="/>
+        <field:select field="coAuthor" id="c_de_unileipzig_authors_model_Book_coAuthor" itemValue="id" items="${authors}" path="/authors" z="7YpFKnF0TyIDIA5SahnBYCxbIxU="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_de_unileipzig_authors_model_Book" render="${not empty dependencies}" z="18TYALj6KYkmgiPHtmeK/Nb9m5Q="/>
 </div>
