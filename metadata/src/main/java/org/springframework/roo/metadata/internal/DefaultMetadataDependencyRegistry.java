@@ -271,8 +271,7 @@ public class DefaultMetadataDependencyRegistry implements
         }
     }
 
-    public void registerDependency(final String upstreamDependency,
-            final String downstreamDependency) {
+    public void registerDependency(final String upstreamDependency, final String downstreamDependency) {
         Validate.isTrue(
                 isValidDependency(upstreamDependency, downstreamDependency),
                 "Invalid dependency between upstream '%s' and downstream '%s'",
@@ -295,8 +294,7 @@ public class DefaultMetadataDependencyRegistry implements
         upstream.add(upstreamDependency);
     }
 
-    public void removeNotificationListener(
-            final MetadataNotificationListener listener) {
+    public void removeNotificationListener(final MetadataNotificationListener listener) {
         Validate.notNull(listener, "Metadata notification listener required");
 
         if (listener instanceof MetadataService

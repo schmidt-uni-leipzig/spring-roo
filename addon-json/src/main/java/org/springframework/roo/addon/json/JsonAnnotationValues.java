@@ -22,6 +22,11 @@ public class JsonAnnotationValues extends AbstractAnnotationValues {
     @AutoPopulate String rootName = "";
     @AutoPopulate String toJsonArrayMethod = "toJsonArray";
     @AutoPopulate String toJsonMethod = "toJson";
+    @AutoPopulate String removeNullProps = "";
+    @AutoPopulate String nullNullProps = "";
+    @AutoPopulate String emptyNullProps = "";
+    @AutoPopulate String defaultNullProps = "";
+    @AutoPopulate String defaultValues = "";
 
     /**
      * Constructor
@@ -60,4 +65,24 @@ public class JsonAnnotationValues extends AbstractAnnotationValues {
     public boolean isIso8601Dates() {
         return iso8601Dates;
     }
+
+	public String getRemoveNullProps() {
+		return removeNullProps;
+	}
+
+	public String getNullNullProps() {
+		return nullNullProps;
+	}
+
+	public String getEmptyNullProps() {
+		return emptyNullProps;
+	}
+
+	public String getDefaultNullProps() {
+		return defaultNullProps;
+	}
+
+	public String getDefaultValues() {
+		return defaultValues;
+	}
 }

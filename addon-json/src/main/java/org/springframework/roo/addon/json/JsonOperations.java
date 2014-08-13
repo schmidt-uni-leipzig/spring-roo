@@ -85,12 +85,19 @@ public interface JsonOperations {
      * 
      * @param javaType
      * 			the owning type
-     * @param propertyName
-     * 			name of the Field not to be serialized
      * @param nullSerialization
      * 			null-serialization option
+     * @param fieldNames
+     * 			names of the properties which should be transformed in a specific manner if they are null
+     * @param defaultValues
+     * 			default Values for properties which shall be serialized with a specific value if they are null
      */
-    void annotateFields(final JavaType javaType, final String[] fieldNames, final NullSerialization nullSerialization) throws Exception;
+    void nullSerializationOption(final JavaType javaType, final String nullSerialization, final String[] fieldNames, final String[] defaultValues) throws Exception;
+    
+    /**
+     * adds all additional maven dependencies to the target project specified in the configuration.xml
+     */
+    void addAdditionalDependencies();
     
     /**
      * Indicates whether this commands for this add-on should be available.

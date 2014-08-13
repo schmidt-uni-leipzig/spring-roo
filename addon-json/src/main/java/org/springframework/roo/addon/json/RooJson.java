@@ -74,4 +74,10 @@ public @interface RooJson {
      *         "toJson"; mandatory)
      */
     String toJsonMethod() default "toJson";
+    
+//    String removeNullProps() default "";
+//    String nullNullProps() default "";
+//    String emptyNullProps() default "";
+//    String defaultNullProps() default "";
+//    String defaultValues() default "";
 }

@@ -3,6 +3,8 @@ import static org.springframework.roo.model.JavaType.STRING;
 import static org.springframework.roo.model.JdkJavaType.ARRAY_LIST;
 import static org.springframework.roo.model.JdkJavaType.COLLECTION;
 import static org.springframework.roo.model.JdkJavaType.LIST;
+import static org.springframework.roo.model.SpringJavaType.REQUEST_MAPPING;
+import static org.springframework.roo.model.RooJavaType.ROO_JSON;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import org.springframework.roo.classpath.PhysicalTypeIdentifierNamingUtils;
 import org.springframework.roo.classpath.PhysicalTypeMetadata;
 import org.springframework.roo.classpath.details.MethodMetadataBuilder;
 import org.springframework.roo.classpath.details.annotations.AnnotatedJavaType;
+import org.springframework.roo.classpath.details.annotations.AnnotationMetadataBuilder;
 import org.springframework.roo.classpath.itd.AbstractItdTypeDetailsProvidingMetadataItem;
 import org.springframework.roo.classpath.itd.InvocableMemberBodyBuilder;
 import org.springframework.roo.metadata.MetadataIdentificationUtils;
@@ -98,6 +101,15 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
         builder.addMethod(getToJsonArrayMethod(false));
         builder.addMethod(getToJsonArrayMethod(true));
         builder.addMethod(getFromJsonArrayMethod());
+        builder.addMethod(getSerializerMethod());
+        
+        builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.NullSerialization"));
+        builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.NullSerializationException"));
+        builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.NullSerializationAnnotation"));
+        builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.NullSerializationTransformer"));
+        builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.ShallowSerializationTransformer"));
+        builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.RooJson"));
+        builder.getImportRegistrationResolver().addImport(new JavaType("java.lang.reflect.Field"));
 
         // Create a representation of the desired output ITD
         itdTypeDetails = builder.build();
@@ -232,6 +244,9 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
 
         final List<AnnotatedJavaType> parameterTypes = AnnotatedJavaType
                 .convertFromJavaTypes(parameterType);
+        
+        parameterTypes.add(new AnnotatedJavaType(JavaType.STRING));
+        parameterNames.add(new JavaSymbolName("path"));
 
         if (includeParams) {
             parameterTypes.add(new AnnotatedJavaType(JavaType.STRING_ARRAY));
@@ -239,21 +254,8 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
         }
 
         final InvocableMemberBodyBuilder bodyBuilder = new InvocableMemberBodyBuilder();
-        final String serializer = JSON_SERIALIZER
-                .getNameIncludingTypeParameters(false,
-                        builder.getImportRegistrationResolver());
-        final String root = annotationValues.getRootName() != null
-                && annotationValues.getRootName().length() > 0 ? ".rootName(\""
-                + annotationValues.getRootName() + "\")" : "";
-        bodyBuilder.appendFormalLine("return new " + serializer + "()" + root);
-        if (annotationValues.isIso8601Dates()) { 
-            bodyBuilder
-                    .appendFormalLine(".transform("
-                    + "new flexjson.transformer.DateTransformer"
-                    + "(\"yyyy-MM-dd\"), java.util.Date.class)");
-        }
-        bodyBuilder
-                    .appendFormalLine(
+        bodyBuilder.appendFormalLine("return GetSerializer(path)");
+        bodyBuilder.appendFormalLine(
                         (!includeParams ? "" : ".include(fields)")
                         + ".exclude(\"*.class\")"
                         + (annotationValues.isDeepSerialize() ? ".deepSerialize(collection)"
@@ -288,22 +290,7 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
         }
 
         final InvocableMemberBodyBuilder bodyBuilder = new InvocableMemberBodyBuilder();
-        final String serializer = JSON_SERIALIZER
-                .getNameIncludingTypeParameters(false,
-                        builder.getImportRegistrationResolver());
-        final String root = annotationValues.getRootName() != null
-                && annotationValues.getRootName().length() > 0 ? ".rootName(\""
-                + annotationValues.getRootName() + "\")" : "";
-        bodyBuilder.appendFormalLine("return new "
-                + serializer
-                + "()"
-                + root);
-        if (annotationValues.isIso8601Dates()) { 
-            bodyBuilder
-                    .appendFormalLine(".transform("
-                    + "new flexjson.transformer.DateTransformer"
-                    + "(\"yyyy-MM-dd\"), java.util.Date.class)");
-        }
+        bodyBuilder.appendFormalLine("return GetSerializer(path)");
         bodyBuilder.appendFormalLine(
                 (!includeParams ? "" : ".include(fields)")
                 + ".exclude(\"*.class\")"
@@ -313,6 +300,9 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
         List<AnnotatedJavaType> parameterTypes = new ArrayList<AnnotatedJavaType>();
         List<JavaSymbolName> parameterNames = new ArrayList<JavaSymbolName>();
 
+        parameterTypes.add(new AnnotatedJavaType(JavaType.STRING));
+        parameterNames.add(new JavaSymbolName("path"));
+        
         if (includeParams) {
             parameterTypes.add(new AnnotatedJavaType(JavaType.STRING_ARRAY));
             parameterNames.add(new JavaSymbolName("fields"));
@@ -331,6 +321,60 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
             return null;
         }
         return new JavaSymbolName(methodLabel);
+    }
+    
+    private MethodMetadataBuilder getSerializerMethod() {
+        // Compute the relevant method name
+        final JavaSymbolName methodName = new JavaSymbolName("GetSerializer");
+        List<AnnotatedJavaType> parameterTypes = new ArrayList<AnnotatedJavaType>();
+        List<JavaSymbolName> parameterNames = new ArrayList<JavaSymbolName>();
+
+        parameterTypes.add(new AnnotatedJavaType(JavaType.STRING));
+        parameterNames.add(new JavaSymbolName("path"));
+        
+        final InvocableMemberBodyBuilder bodyBuilder = new InvocableMemberBodyBuilder();
+        final String serializer = JSON_SERIALIZER
+                .getNameIncludingTypeParameters(false,
+                        builder.getImportRegistrationResolver());
+        final String root = annotationValues.getRootName() != null
+                && annotationValues.getRootName().length() > 0 ? ".rootName(\""
+                + annotationValues.getRootName() + "\")" : "";
+        bodyBuilder.appendFormalLine("JSONSerializer s = new " + serializer + "()" + root + ";");
+        
+        bodyBuilder.appendFormalLine("Field[] fields = " + destination.getSimpleTypeName() + ".class.getDeclaredFields();");
+        bodyBuilder.appendFormalLine("for(Field field : fields){");
+		bodyBuilder.appendFormalLine("NullSerializationAnnotation anno = field.getAnnotation(NullSerializationAnnotation.class);");
+        bodyBuilder.appendFormalLine("RooJson rooAnno = field.getAnnotation(RooJson.class);");
+        bodyBuilder.appendFormalLine("if(anno != null){");
+        bodyBuilder.appendFormalLine("try{");
+        bodyBuilder.appendFormalLine("if(anno.nullSerialization() == NullSerialization.DEFAULT)");
+        bodyBuilder.appendFormalLine("s = s.transform(new NullSerializationTransformer(anno.nullSerialization(), anno.defaultValue()), field.getName().toString().trim().toLowerCase());");
+        bodyBuilder.appendFormalLine("else");
+        bodyBuilder.appendFormalLine("s = s.transform(new NullSerializationTransformer(anno.nullSerialization()), field.getName().toString().trim().toLowerCase());");
+        bodyBuilder.appendFormalLine("} catch (NullSerializationException e) {");
+        bodyBuilder.appendFormalLine("e.printStackTrace();");
+        bodyBuilder.appendFormalLine("} }");
+        if(!annotationValues.isDeepSerialize()) //not!!
+        {
+	        bodyBuilder.appendFormalLine("if(anno != null)");
+	        bodyBuilder.appendFormalLine("s = s.transform(new ShallowSerializationTransformer(path), Object.class);");
+        }
+        bodyBuilder.appendFormalLine("}");
+        
+        
+        if (annotationValues.isIso8601Dates()) { 
+            bodyBuilder
+                    .appendFormalLine("s = s.transform("
+                    + "new flexjson.transformer.DateTransformer"
+                    + "(\"yyyy-MM-dd\"), java.util.Date.class);");
+        }
+        bodyBuilder.appendFormalLine("return s;");
+        
+        final MethodMetadataBuilder methodBuilder = new MethodMetadataBuilder(
+                getId(), Modifier.PRIVATE | Modifier.STATIC, methodName, JSON_SERIALIZER, parameterTypes,
+                parameterNames, bodyBuilder);
+        methodBuilder.putCustomData(CustomDataJsonTags.TO_JSON_METHOD, null);
+        return methodBuilder;
     }
 
     @Override

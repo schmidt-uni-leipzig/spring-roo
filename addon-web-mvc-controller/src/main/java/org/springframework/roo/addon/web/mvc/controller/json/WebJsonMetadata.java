@@ -319,8 +319,7 @@ public class WebJsonMetadata extends
                 + jsonBeanName + " = " + jsonEnabledTypeShortName + "."
                 + fromJsonMethodName.getSymbolName() + "(json);");
         bodyBuilder.appendFormalLine(persistMethod.getMethodCall() + ";");
-        bodyBuilder.appendFormalLine(
-                "RequestMapping a = (RequestMapping) getClass().getAnnotation(RequestMapping.class);");
+        bodyBuilder.appendFormalLine("RequestMapping a = (RequestMapping) getClass().getAnnotation(RequestMapping.class);");
         bodyBuilder.appendFormalLine(
                 "headers.add(\"Location\",uriBuilder.path(a.value()[0]+\"/\"+"
                 + jsonBeanName
@@ -568,11 +567,12 @@ public class WebJsonMetadata extends
         openTry(bodyBuilder);
         final JavaType list = new JavaType(List.class.getName(), 0,
                 DataType.TYPE, null, Arrays.asList(jsonEnabledType));
+        bodyBuilder.appendFormalLine("RequestMapping a = (RequestMapping) getClass().getAnnotation(RequestMapping.class);");
         bodyBuilder.appendFormalLine(getShortName(list) + " result = "
                 + findAllMethod.getMethodCall() + ";");
         bodyBuilder.appendFormalLine("return new " + responseEntityShortName
                 + "<String>(" + jsonEnabledTypeShortName + "."
-                + toJsonArrayMethodName.getSymbolName() + "(result), headers, "
+                + toJsonArrayMethodName.getSymbolName() + "(result, a.value()[0]), headers, "
                 + httpStatusShortName + ".OK);");
         closeTry(bodyBuilder, responseEntityShortName, httpStatusShortName);
 
@@ -656,9 +656,10 @@ public class WebJsonMetadata extends
                 + "<String>(headers, " + httpStatusShortName + ".NOT_FOUND);");
         bodyBuilder.indentRemove();
         bodyBuilder.appendFormalLine("}");
+        bodyBuilder.appendFormalLine("RequestMapping a = (RequestMapping) getClass().getAnnotation(RequestMapping.class);");
         bodyBuilder.appendFormalLine("return new " + responseEntityShortName
                 + "<String>(" + jsonBeanName + "."
-                + toJsonMethodName.getSymbolName() + "(), headers, "
+                + toJsonMethodName.getSymbolName() + "(a.value()[0]), headers, "
                 + httpStatusShortName + ".OK);");
         closeTry(bodyBuilder, responseEntityShortName, httpStatusShortName); 
 

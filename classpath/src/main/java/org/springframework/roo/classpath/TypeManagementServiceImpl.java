@@ -109,8 +109,7 @@ public class TypeManagementServiceImpl implements TypeManagementService {
         boolean existsFile = false;
         if (fileCanonicalPath != null) {
             file = new File(fileCanonicalPath);
-            existsFile = file.exists() && file.isFile();
-        }
+            existsFile = file.exists() && file.isFile();      }
         if (existsFile) {
             newContents = typeParsingService
                     .updateAndGetCompilationUnitContents(fileCanonicalPath, cid);
