@@ -1,0 +1,15 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.springframework.roo</groupId>
+  <artifactId>org.springframework.roo.addon.json.customizing</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>RooJsonCustomizing</name>
+  <description>adds different null serialization methods and field exemptions to roo json</description>
+    <dependencies>
+          <dependency>
+			<groupId>net.sf.flexjson</groupId>
+			<artifactId>flexjson</artifactId>
+			<version>2.1</version>
+		</dependency>
+    </dependencies>
+</project>

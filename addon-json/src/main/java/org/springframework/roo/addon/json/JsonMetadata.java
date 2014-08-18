@@ -3,8 +3,6 @@ import static org.springframework.roo.model.JavaType.STRING;
 import static org.springframework.roo.model.JdkJavaType.ARRAY_LIST;
 import static org.springframework.roo.model.JdkJavaType.COLLECTION;
 import static org.springframework.roo.model.JdkJavaType.LIST;
-import static org.springframework.roo.model.SpringJavaType.REQUEST_MAPPING;
-import static org.springframework.roo.model.RooJavaType.ROO_JSON;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ import org.springframework.roo.classpath.PhysicalTypeIdentifierNamingUtils;
 import org.springframework.roo.classpath.PhysicalTypeMetadata;
 import org.springframework.roo.classpath.details.MethodMetadataBuilder;
 import org.springframework.roo.classpath.details.annotations.AnnotatedJavaType;
-import org.springframework.roo.classpath.details.annotations.AnnotationMetadataBuilder;
 import org.springframework.roo.classpath.itd.AbstractItdTypeDetailsProvidingMetadataItem;
 import org.springframework.roo.classpath.itd.InvocableMemberBodyBuilder;
 import org.springframework.roo.metadata.MetadataIdentificationUtils;
@@ -95,21 +92,22 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
         this.annotationValues = annotationValues;
         this.typeNamePlural = typeNamePlural;
 
+        builder.addMethod(getSerializerMethod());
         builder.addMethod(getToJsonMethod(false));
         builder.addMethod(getToJsonMethod(true));
         builder.addMethod(getFromJsonMethod());
         builder.addMethod(getToJsonArrayMethod(false));
         builder.addMethod(getToJsonArrayMethod(true));
         builder.addMethod(getFromJsonArrayMethod());
-        builder.addMethod(getSerializerMethod());
         
         builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.NullSerialization"));
         builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.NullSerializationException"));
         builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.NullSerializationAnnotation"));
         builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.NullSerializationTransformer"));
         builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.customizing.ShallowSerializationTransformer"));
-        builder.getImportRegistrationResolver().addImport(new JavaType("org.springframework.roo.addon.json.RooJson"));
         builder.getImportRegistrationResolver().addImport(new JavaType("java.lang.reflect.Field"));
+        builder.getImportRegistrationResolver().addImport(new JavaType("java.lang.reflect.ParameterizedType"));
+        builder.getImportRegistrationResolver().addImport(new JavaType("java.lang.reflect.Type"));
 
         // Create a representation of the desired output ITD
         itdTypeDetails = builder.build();
@@ -344,7 +342,6 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
         bodyBuilder.appendFormalLine("Field[] fields = " + destination.getSimpleTypeName() + ".class.getDeclaredFields();");
         bodyBuilder.appendFormalLine("for(Field field : fields){");
 		bodyBuilder.appendFormalLine("NullSerializationAnnotation anno = field.getAnnotation(NullSerializationAnnotation.class);");
-        bodyBuilder.appendFormalLine("RooJson rooAnno = field.getAnnotation(RooJson.class);");
         bodyBuilder.appendFormalLine("if(anno != null){");
         bodyBuilder.appendFormalLine("try{");
         bodyBuilder.appendFormalLine("if(anno.nullSerialization() == NullSerialization.DEFAULT)");
@@ -356,11 +353,27 @@ public class JsonMetadata extends AbstractItdTypeDetailsProvidingMetadataItem {
         bodyBuilder.appendFormalLine("} }");
         if(!annotationValues.isDeepSerialize()) //not!!
         {
-	        bodyBuilder.appendFormalLine("if(anno != null)");
-	        bodyBuilder.appendFormalLine("s = s.transform(new ShallowSerializationTransformer(path), Object.class);");
-        }
-        bodyBuilder.appendFormalLine("}");
-        
+        	bodyBuilder.appendFormalLine("if(!field.getType().isPrimitive()){ //not!!!");
+        	bodyBuilder.appendFormalLine("String root = field.getType().getName().substring(0, field.getType().getName().lastIndexOf('.'));");
+        	bodyBuilder.appendFormalLine("Type cl = field.getGenericType();");
+        	bodyBuilder.appendFormalLine("while (cl != null){");
+        	bodyBuilder.appendFormalLine("if(cl instanceof ParameterizedType){");
+        	bodyBuilder.appendFormalLine("Type[] genClasses =  ((ParameterizedType) cl ).getActualTypeArguments();");
+        	bodyBuilder.appendFormalLine("if(genClasses.length>0)");
+        	bodyBuilder.appendFormalLine("root = ((Class)genClasses[0]).getName().substring(0, ((Class)genClasses[0]).getName().lastIndexOf('.'));");
+        	bodyBuilder.appendFormalLine("break;}");
+        	bodyBuilder.appendFormalLine("else");
+        	bodyBuilder.appendFormalLine("cl = ((Class) cl).getGenericSuperclass();}");
+
+        	bodyBuilder.appendFormalLine("if(field.getType() instanceof Class && !((Class<?>)field.getType()).isEnum() //not an enum!");
+        	bodyBuilder.appendFormalLine("&& root.equals(" + destination.getSimpleTypeName() + 
+        			".class.getName().substring(0, " + destination.getSimpleTypeName() + ".class.getName().lastIndexOf('.'))))");
+        	bodyBuilder.appendFormalLine("s = s.transform(new ShallowSerializationTransformer(path), field.getName().toString().trim().toLowerCase());");
+        	bodyBuilder.appendFormalLine("}}");
+	        
+	        //deepSerialize has to be true for including ShallowSerializationObject -> ergo this method has to be created first!
+	        annotationValues.deepSerialize = true;
+        }        
         
         if (annotationValues.isIso8601Dates()) { 
             bodyBuilder

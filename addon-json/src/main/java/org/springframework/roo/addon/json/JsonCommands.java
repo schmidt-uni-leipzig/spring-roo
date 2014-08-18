@@ -32,9 +32,7 @@ public class JsonCommands implements CommandMarker {
             @CliOption(key = "deepSerialize", unspecifiedDefaultValue = "false", specifiedDefaultValue = "true", mandatory = false, help = "Indication if deep serialization should be enabled.") 
             final boolean deep,
             @CliOption(key = "iso8601Dates", unspecifiedDefaultValue = "false", specifiedDefaultValue = "true", mandatory = false, help = "Indication if dates should be formatted according to ISO 8601") 
-            final boolean iso8601Dates, 
-            @CliOption(key = "nullSerialization", mandatory = false,  optionContext = "IGNORE,REMOVE,NULL,EMPTY,DEFAULT", unspecifiedDefaultValue = "REMOVE", specifiedDefaultValue = "REMOVE", help = "serializes the specified property if it were null") 
-            final String nullSerialization)
+            final boolean iso8601Dates)
     {
 
         jsonOperations.annotateType(target, rootName, deep, iso8601Dates);
@@ -51,15 +49,16 @@ public class JsonCommands implements CommandMarker {
 
     }
     
-    @CliCommand(value = "json customize", help = "Adds @JSON( transformer = NoSerializationTransformer.class) to to entered property")
+    @CliCommand(value = "json nullSerialze", help = "define properties which should be serialized in a specific way if null")
     public void customize(
             @CliOption(key = "class", mandatory = true, unspecifiedDefaultValue = "*", optionContext = UPDATE_PROJECT, help = "The java type to apply this annotation to") 
             final JavaType target,
-            @CliOption(key = "nullSerialization", mandatory = false,  optionContext = "REMOVE, NULL, EMPTY, DEFAULT", unspecifiedDefaultValue = "REMOVE", specifiedDefaultValue = "REMOVE", help = "serializes the specified property if it were null") 
+            @CliOption(key = "nullSerialization", mandatory = false,  optionContext = "REMOVE, NULL, EMPTY, DEFAULT", unspecifiedDefaultValue = "REMOVE", specifiedDefaultValue = "REMOVE", 
+            	help = "define how to serialize this property when it is null (REMOVE, NULL, EMPTY or DEFAULT)") 
             final String nullSerialization,
-            @CliOption(key = "defaultValues", mandatory = false,  help = "if nullSerialization = DEFAULT, a default values have to be issued") 
+            @CliOption(key = "defaultValues", mandatory = false,  help = "if nullSerialization = DEFAULT, default values have to be issued") 
             final String defaultValues,
-            @CliOption(key = "exemptFields", mandatory = true, help = "a comma-seperated list of property-names which should not be serialized") 
+            @CliOption(key = "exemptFields", mandatory = true, help = "a comma-seperated list of properties for which this null-serialization rule should applie to") 
             final String fieldNames)
     {
 		if (fieldNames != null) {
@@ -94,7 +93,7 @@ public class JsonCommands implements CommandMarker {
 		}
     }
     
-    @CliAvailabilityIndicator({ "json setup", "json add", "json all", "json customize" })
+    @CliAvailabilityIndicator({ "json setup", "json add", "json all", "json nullSerialze" })
     public boolean isPropertyAvailable() {
         return jsonOperations.isJsonInstallationPossible();
     }

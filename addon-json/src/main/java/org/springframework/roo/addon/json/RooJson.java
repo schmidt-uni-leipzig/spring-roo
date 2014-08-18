@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @since 1.1
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface RooJson {
 
     /**
@@ -75,9 +75,12 @@ public @interface RooJson {
      */
     String toJsonMethod() default "toJson";
     
-//    String removeNullProps() default "";
-//    String nullNullProps() default "";
-//    String emptyNullProps() default "";
-//    String defaultNullProps() default "";
-//    String defaultValues() default "";
+    /**
+     * A comma-seperated list of default values corresponding to 
+     * properties with NullSerialization = DEFAULT.
+     * 
+     * @return default value list
+     */
+    String defaultValues() default "";
+
 }
